@@ -1,0 +1,1275 @@
+# Copyright 2026 TeamJeZxLee.Itch.io
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy of this software
+# and associated documentation files (the "Software"), to deal in the Software without restriction,
+# including without limitation the rights to use, copy, modify, merge, publish, distribute,
+# sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all copies or
+# substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING
+# BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+# NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+# DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+# "LogicCore.gd"
+extends Node2D
+
+var Version = "Retail Version 1.1.0"
+
+const ChildStoryMode				= 0
+const TeenStoryMode					= 1
+const AdultStoryMode				= 2
+const TurboStoryMode				= 3
+const ChildNeverMode				= 4
+const TeenNeverMode					= 5
+const AdultNeverMode				= 6
+const TurboNeverMode				= 7
+var GameMode = AdultStoryMode
+
+const Playing				= 1
+const FadingTiles			= 2
+const ApplyingGravity		= 3
+var GameState = Playing
+
+var LevelAdvance = []
+
+var TotalTilesCleared = 0
+
+var GameSpeed = 30
+
+var SecretCode = []
+var SecretCodeCombined = 0
+
+var PAUSEgame = false
+var PauseWasJustPressed = false
+
+var Score
+var ScoreChanged
+var ScoreText
+
+var Level
+var LevelText
+
+var TotalClearedTiles
+var LevelCleared
+var CurrentClearedTiles
+
+var GameWon
+
+var StillPlaying
+
+var Playfield = []
+
+var TileSpriteIndex = []
+
+var FallingTileScreenX
+var FallingTileScreenY
+var FallingTileX
+var FallingTileY
+var FallingTileYoffset
+
+var FallingTile
+
+var GameOver
+
+var SelectedTilePlayfieldX = []
+var SelectedTilePlayfieldY = []
+var SelectedTileIndex
+
+var UndoButtonDelay
+
+var BadEquationRedTimer
+
+var EquationString: String = ""
+var EquationStringNew = ""
+var DrawEverything
+
+var ThereIsAnOperator
+
+var ThereIsAnEqual
+
+var SelectedTilesAlpha = 1.0
+
+var PiecesCanStillFall = false
+
+var BonusScore
+
+var PlusIndex
+var MinusIndex
+var MultiplyIndex
+var DivideIndex
+var EqualIndex
+
+var PlusEquationValue
+var MinusEquationValue
+var MultiplyEquationValue
+var DivideEquationValue
+var EqualdValue
+
+var TheEnd
+
+var number = []
+var mathOperator = []
+
+var GameQuit
+
+var TileSelectedDrawTwiceBandaid
+
+var CurrentHeightOfPlayfield
+
+var CutSceneAlpha
+var CutSceneScale
+var CutSceneTimer
+var CutSceneBlackBackgroundAlpha
+
+var UndoAction = 1
+
+var TileClicked = false
+
+#---------------------------------------------------------------------------------------
+func SetupForNewGame():
+	PAUSEgame = false
+
+	PlusEquationValue = 0
+	MinusEquationValue = 0
+	MultiplyEquationValue = 0
+	DivideEquationValue = 0
+	EqualdValue = 0
+
+	GameState = Playing
+
+	TotalTilesCleared = 0
+
+	Score = 0
+	Level = 1
+
+	BonusScore = 0
+
+	GameQuit = false
+
+	TotalClearedTiles = 0
+
+	GameWon = false
+
+	for y in range(0, 8):
+		for x in range(0, 12):
+			Playfield[x][y] = -1
+
+	var allTilesShown = false
+	while (allTilesShown == false):
+		for y in range(0, 2):
+			for x in range(0, 12):
+				Playfield[x][y] = (randi() % 10)
+
+		Playfield[randi() % 12][randi() % 2] = 10
+		Playfield[randi() % 12][randi() % 2] = 11
+		Playfield[randi() % 12][randi() % 2] = 12
+		Playfield[randi() % 12][randi() % 2] = 13
+
+		Playfield[randi() % 12][randi() % 2] = 14
+
+		var shownPlus = false
+		var shownMinus = false
+		var shownMultiply = false
+		var shownDivide = false
+		var shownEqual = false
+		for y in range(0, 8):
+			for x in range(0, 12):
+				if (Playfield[x][y] == 10):  shownPlus = true
+				if (Playfield[x][y] == 11):  shownMinus = true
+				if (Playfield[x][y] == 12):  shownMultiply = true
+				if (Playfield[x][y] == 13):  shownDivide = true
+				if (Playfield[x][y] == 14):  shownEqual = true
+
+		if (shownPlus == true and shownMinus == true and shownMultiply == true and shownDivide == true and shownEqual == true):
+			allTilesShown = true
+
+	FallingTileX = 0
+	FallingTileY = 7
+	FallingTileScreenX = 99
+	FallingTileScreenY = (500-37) - (FallingTileY*75)
+	FallingTileYoffset = 0
+
+	FallingTile = (randi() % 10)
+
+	StillPlaying = true
+
+	GameOver = false
+
+	for index in range(0, 10):
+		SelectedTilePlayfieldX[index] = -1
+		SelectedTilePlayfieldY[index] = -1
+
+	SelectedTileIndex = 0
+
+	UndoButtonDelay = 0
+
+	BadEquationRedTimer = 0
+
+	EquationString = ""
+
+	DrawEverything = true
+	ScoreChanged = true
+
+	ThereIsAnEqual = false
+
+	SelectedTilesAlpha = 1.0
+
+	PiecesCanStillFall = false
+
+	CurrentClearedTiles = 0
+
+	TileSelectedDrawTwiceBandaid = 0
+
+	CurrentHeightOfPlayfield = 0
+
+	TileClicked = false
+
+	if (GameMode < 4):
+		CutSceneAlpha = 0.0
+		CutSceneScale = 1.0
+		CutSceneTimer = 0
+		CutSceneBlackBackgroundAlpha = 1.0
+		
+	else:
+		CutSceneAlpha = 0.0
+		CutSceneScale = 0.0
+		CutSceneTimer = 0
+		CutSceneBlackBackgroundAlpha = 0.0
+
+	if (LogicCore.SecretCodeCombined == 2776):
+		Score = 95788340
+		Level = 9
+		TotalClearedTiles = 109
+
+	pass
+
+#----------------------------------------------------------------------------------------
+func SetUpNextFallingTile():
+	DrawEverything = true
+
+	GameState = Playing
+
+	PiecesCanStillFall = false
+
+	SelectedTilesAlpha = 1.0
+
+	AudioCore.PlayEffect(3)
+
+	if (FallingTileX < 11):
+		FallingTileX+=1
+	else:
+		FallingTileX = 0
+
+	FallingTileY = 7
+
+	if (Playfield[FallingTileX][FallingTileY-1] > -1):
+		StillPlaying = false
+		GameOver = true
+		AudioCore.PlayEffect(4)
+		return
+
+	FallingTileScreenX = 99 + (FallingTileX*75)
+	FallingTileScreenY = (500-37) - (FallingTileY*75)
+	FallingTileYoffset = 0
+
+	FallingTile = (randi() % 10)
+
+	var allTilesShown = false
+	while (allTilesShown == false):
+		var shownPlus = false
+		var shownMinus = false
+		var shownMultiply = false
+		var shownDivide = false
+		var shownEqual = false
+		for y in range(0, 8):
+			for x in range(0, 12):
+				if (Playfield[x][y] == 10):  shownPlus = true
+				if (Playfield[x][y] == 11):  shownMinus = true
+				if (Playfield[x][y] == 12):  shownMultiply = true
+				if (Playfield[x][y] == 13):  shownDivide = true
+				if (Playfield[x][y] == 14):  shownEqual = true
+
+		if (shownEqual == false):
+			FallingTile = 14
+			return
+		elif (shownPlus == false):
+			FallingTile = 10
+			return
+		elif (shownMinus == false):
+			FallingTile = 11
+			return
+		elif (shownMultiply == false):
+			FallingTile = 12
+			return
+		elif (shownDivide == false):
+			FallingTile = 13
+			return
+
+		if (shownPlus == true and shownMinus == true and shownMultiply == true and shownDivide == true and shownEqual == true):
+			allTilesShown = true
+
+	pass
+
+#----------------------------------------------------------------------------------------
+func ConvertTilesToString():
+	ThereIsAnOperator = false
+	ThereIsAnEqual = false
+	
+	PlusIndex = -1
+	MinusIndex = -1
+	MultiplyIndex = -1
+	DivideIndex = -1
+	EqualIndex = -1
+
+	TheEnd = 0
+
+	CurrentClearedTiles = 0
+
+	EquationString = ""
+	var index = 0
+	while (index < 10 and SelectedTilePlayfieldX[index] != -1 and SelectedTilePlayfieldY[index] != -1):
+		var selX = SelectedTilePlayfieldX[index]
+		var selY = SelectedTilePlayfieldY[index]
+		if (Playfield[selX][selY] > -1 and Playfield[selX][selY] < 16):
+			CurrentClearedTiles+=1
+			var part = Playfield[selX][selY]
+			if   (part ==  0):  EquationString+="0"
+			elif (part ==  1):  EquationString+="1"
+			elif (part ==  2):  EquationString+="2"
+			elif (part ==  3):  EquationString+="3"
+			elif (part ==  4):  EquationString+="4"
+			elif (part ==  5):  EquationString+="5"
+			elif (part ==  6):  EquationString+="6"
+			elif (part ==  7):  EquationString+="7"
+			elif (part ==  8):  EquationString+="8"
+			elif (part ==  9):  EquationString+="9"
+			elif (part == 10):
+				EquationString+="+"
+				PlusIndex = index
+				ThereIsAnOperator = true
+			elif (part == 11):
+				EquationString+="-"
+				MinusIndex = index
+				ThereIsAnOperator = true
+			elif (part == 12):
+				EquationString+="*"
+				ThereIsAnOperator = true
+				MultiplyIndex = index
+			elif (part == 13):
+				EquationString+="/"
+				ThereIsAnOperator = true
+				DivideIndex = index
+			elif (part == 14):
+				#EquationString+="="
+				ThereIsAnEqual = true
+				EqualIndex = index
+				index = 13
+
+			index+=1
+
+	TheEnd = index
+
+#	EquationString+="E"
+
+	pass
+
+#----------------------------------------------------------------------------------------
+func CreateEquationStringNew():
+	EquationStringNew = ""
+
+	for index in range(0, TheEnd, 1):
+		if (EquationString[index] != "E"):
+			EquationStringNew[index] = EquationString[index]
+
+			if (EquationStringNew[index] == "+"):
+				PlusIndex = index
+				ThereIsAnOperator = true
+			elif (EquationStringNew[index] == "-"):
+				MinusIndex = index
+				ThereIsAnOperator = true
+			elif (EquationStringNew[index] == "*"):
+				ThereIsAnOperator = true
+				MultiplyIndex = index
+			elif (EquationStringNew[index] == "/"):
+				ThereIsAnOperator = true
+				DivideIndex = index
+			elif (EquationStringNew[index] == "="):
+				ThereIsAnEqual = true
+				EqualIndex = index
+
+	EquationStringNew[TheEnd] = "E"
+
+	pass
+
+#----------------------------------------------------------------------------------------
+func CheckEquationNewPerfect():
+	ConvertTilesToString()
+	
+	print(EquationString) #  4/2+6*-9=8E  ("E" = end of string, must be some better way?)
+	
+	var expression = Expression.new()
+	expression.parse(EquationString)
+	var result = expression.execute()
+	print(result) #  <null>
+
+	return(false) #  Will return true in future when full equation equals the selected result
+
+#----------------------------------------------------------------------------------------
+func CheckEquationNew():
+
+	var returnValue = false
+	var currentEquationValue = 0
+	var operationStartLeft
+	var operationEndLeft
+	var operationStartRight
+	var operationEndRight
+	var breakForLoop = false
+
+	var numberOne = 0
+	var numberTwo = 0
+	var numberVal = 0
+	var numberMultiple = 1
+
+	var numberIsNegative = false
+
+	var rightNumberSize = 0
+
+	PlusEquationValue = 0
+	MinusEquationValue = 0
+	MultiplyEquationValue = 0
+	DivideEquationValue = 0
+	EqualdValue = 0
+
+	PlusIndex = -1
+	MinusIndex = -1
+	MultiplyIndex = -1
+	DivideIndex = -1
+	EqualIndex = -1
+
+	if (ThereIsAnEqual == false):  return(false)
+	if (ThereIsAnOperator == false):  return(false)
+
+	CreateEquationStringNew()
+
+	print(EquationStringNew)
+
+	if (MultiplyIndex > -1):
+		print("-PE[Multiply]DAS-------------------------------------------------------------------")
+		operationStartLeft = MultiplyIndex
+		operationEndLeft = MultiplyIndex
+		numberOne = 0
+#		numberTwo = 0
+		numberVal = 0
+		numberMultiple = 1
+		numberIsNegative = false
+		breakForLoop = false
+		for multiply in range( (MultiplyIndex - 1), -1, -1 ):
+			if (breakForLoop == false):
+				numberOne = null
+				if (EquationStringNew[multiply] == "0"):  numberOne = 0
+				elif (EquationStringNew[multiply] == "1"):  numberOne = 1
+				elif (EquationStringNew[multiply] == "2"):  numberOne = 2
+				elif (EquationStringNew[multiply] == "3"):  numberOne = 3
+				elif (EquationStringNew[multiply] == "4"):  numberOne = 4
+				elif (EquationStringNew[multiply] == "5"):  numberOne = 5
+				elif (EquationStringNew[multiply] == "6"):  numberOne = 6
+				elif (EquationStringNew[multiply] == "7"):  numberOne = 7
+				elif (EquationStringNew[multiply] == "8"):  numberOne = 8
+				elif (EquationStringNew[multiply] == "9"):  numberOne = 9
+				elif (EquationStringNew[multiply] == "+" or EquationStringNew[multiply] == "*" or EquationStringNew[multiply] == "/" or EquationStringNew[multiply] == "="):
+					breakForLoop = true
+				elif (EquationStringNew[multiply] == "-"):
+					numberIsNegative = false
+					breakForLoop = true
+
+					if (multiply == 0):
+							numberIsNegative = true
+							breakForLoop = false
+					elif (multiply > 0):
+						if (EquationStringNew[multiply-1] == "+" or EquationStringNew[multiply-1] == "*" or EquationStringNew[multiply-1] == "/"):
+							numberIsNegative = true
+							breakForLoop = false
+
+				if (numberOne != null):  numberVal += (numberOne * numberMultiple)
+
+				operationStartLeft-=1
+				numberMultiple*=10
+
+		if (numberIsNegative == true):  numberVal = numberVal * -1
+
+		print("First Val:", numberVal, " / Start:", operationStartLeft, " / End:", operationEndLeft)
+
+		currentEquationValue = numberVal
+
+		operationStartRight = (MultiplyIndex+1)
+		operationEndRight = TheEnd
+#		numberOne = 0
+		numberTwo = 0
+		numberVal = 0
+		numberMultiple = 1
+		numberIsNegative = false
+		breakForLoop = false
+		rightNumberSize = 0
+		for multiply in range(operationStartRight, operationEndRight, 1):
+			if (breakForLoop == false):
+				numberTwo = null
+
+				if (EquationStringNew[multiply] == "-"):
+					if (multiply == operationStartRight):
+						numberIsNegative = true
+#						multiply+=1
+						rightNumberSize+=1
+#						print("-")
+
+				elif (EquationStringNew[multiply] == "0"):  numberTwo = 0
+				elif (EquationStringNew[multiply] == "1"):  numberTwo = 1
+				elif (EquationStringNew[multiply] == "2"):  numberTwo = 2
+				elif (EquationStringNew[multiply] == "3"):  numberTwo = 3
+				elif (EquationStringNew[multiply] == "4"):  numberTwo = 4
+				elif (EquationStringNew[multiply] == "5"):  numberTwo = 5
+				elif (EquationStringNew[multiply] == "6"):  numberTwo = 6
+				elif (EquationStringNew[multiply] == "7"):  numberTwo = 7
+				elif (EquationStringNew[multiply] == "8"):  numberTwo = 8
+				elif (EquationStringNew[multiply] == "9"):  numberTwo = 9
+				elif ( EquationStringNew[multiply] == "+" or (numberIsNegative == false and EquationStringNew[multiply] == "-") or EquationStringNew[multiply] == "/" or EquationStringNew[multiply] == "=" ):
+					breakForLoop = true
+
+				if (numberTwo != null):  rightNumberSize+=1
+
+		operationStartRight = ( (MultiplyIndex+1) + rightNumberSize - 1)
+		operationEndRight = (MultiplyIndex)
+#		numberOne = 0
+		numberTwo = 0
+		numberVal = 0
+		numberMultiple = 1
+		numberIsNegative = false
+		breakForLoop = false
+		for multiply in range(operationStartRight, operationEndRight, -1):
+			if (breakForLoop == false):
+				numberTwo = null
+				if (EquationStringNew[multiply] == "0"):  numberTwo = 0
+				elif (EquationStringNew[multiply] == "1"):  numberTwo = 1
+				elif (EquationStringNew[multiply] == "2"):  numberTwo = 2
+				elif (EquationStringNew[multiply] == "3"):  numberTwo = 3
+				elif (EquationStringNew[multiply] == "4"):  numberTwo = 4
+				elif (EquationStringNew[multiply] == "5"):  numberTwo = 5
+				elif (EquationStringNew[multiply] == "6"):  numberTwo = 6
+				elif (EquationStringNew[multiply] == "7"):  numberTwo = 7
+				elif (EquationStringNew[multiply] == "8"):  numberTwo = 8
+				elif (EquationStringNew[multiply] == "9"):  numberTwo = 9
+				elif (EquationStringNew[multiply] == "+" or EquationStringNew[multiply] == "*" or EquationStringNew[multiply] == "/" or EquationStringNew[multiply] == "="):
+					breakForLoop = true
+				elif (EquationStringNew[multiply] == "-"):
+					numberIsNegative = false
+					breakForLoop = true
+
+					if (multiply == (MultiplyIndex+1) ):
+							numberIsNegative = true
+							breakForLoop = false
+
+				if (numberTwo != null):  numberVal += (numberTwo * numberMultiple)
+
+				numberMultiple*=10
+
+		if (numberIsNegative == true):  numberVal = numberVal * -1
+
+		print("Second Val:", numberVal, " / Start:", operationStartRight, " / End:", operationEndRight)
+
+		currentEquationValue = currentEquationValue * numberVal
+		
+		print("Multiply Val:", currentEquationValue)
+
+
+
+
+
+		#operationStartRight = ( (MultiplyIndex+1) + rightNumberSize )
+		#operationEndRight = (MultiplyIndex+1)
+##		numberOne = 0
+		#numberTwo = 0
+		#numberVal = 0
+		#numberMultiple = 1
+		#numberIsNegative = false
+		#breakForLoop = false
+		#rightNumberSize = 0
+		#for multiply in range(operationStartRight, operationEndRight, -1):
+			#if (breakForLoop == false):
+				#numberTwo = null
+#
+				#if (multiply == operationStartRight):
+					#if (EquationStringNew[multiply] == "-"):  numberIsNegative = true
+#
+				#if (EquationStringNew[multiply] == "0"):  numberTwo = 0
+				#elif (EquationStringNew[multiply] == "1"):  numberTwo = 1
+				#elif (EquationStringNew[multiply] == "2"):  numberTwo = 2
+				#elif (EquationStringNew[multiply] == "3"):  numberTwo = 3
+				#elif (EquationStringNew[multiply] == "4"):  numberTwo = 4
+				#elif (EquationStringNew[multiply] == "5"):  numberTwo = 5
+				#elif (EquationStringNew[multiply] == "6"):  numberTwo = 6
+				#elif (EquationStringNew[multiply] == "7"):  numberTwo = 7
+				#elif (EquationStringNew[multiply] == "8"):  numberTwo = 8
+				#elif (EquationStringNew[multiply] == "9"):  numberTwo = 9
+				#elif (EquationStringNew[multiply] == "+" or EquationStringNew[multiply] == "-" or EquationStringNew[multiply] == "/" or EquationStringNew[multiply] == "="):
+					#breakForLoop = true
+#
+	#print("Val:", numberVal, " / Start:", operationStartRight, " / End:", operationEndRight)
+#
+##	currentEquationValue = numberVal
+
+
+
+
+
+
+					#numberVal += (Playfield[selX][selY] * numberMultiple)
+					#numberMultiple*=10
+					#operationStartLeft-=1
+
+
+
+#		if (numberIsNegative == true):  
+
+
+
+
+
+
+
+
+
+
+				##var selX = SelectedTilePlayfieldX[multiply]
+				##var selY = SelectedTilePlayfieldY[multiply]
+##
+				##if (Playfield[selX][selY] > -1 and Playfield[selX][selY] < 10): # 0-9
+					##numberVal += (Playfield[selX][selY] * numberMultiple)
+					##numberMultiple*=10
+					##operationStartLeft-=1
+				##elif (Playfield[selX][selY] == 10 or Playfield[selX][selY] == 11 or Playfield[selX][selY] == 12 or Playfield[selX][selY] == 13 or Playfield[selX][selY] == 14):
+					##breakForLoop = true
+#
+		#currentEquationValue = numberVal
+#
+		#print("Val:", numberVal, " / Start:", operationStartLeft, " / End:", operationEndLeft)
+#
+		#operationStartRight = MultiplyIndex+1
+		#operationEndRight = SelectedTileIndex
+		#numberVal = 0
+		#numberMultiple = 1
+		#breakForLoop = false
+#
+		#var numberIsNegative = false
+		#for multiply in range(operationStartRight, operationEndRight, 1): # 
+			#if (breakForLoop == false):
+				#var selX = SelectedTilePlayfieldX[multiply]
+				#var selY = SelectedTilePlayfieldY[multiply]
+#
+				#if (Playfield[selX][selY] > -1 and Playfield[selX][selY] < 10): # 0-9
+					#numberVal += (Playfield[selX][selY] * numberMultiple)
+					#numberMultiple*=10
+				#elif (Playfield[selX][selY] == 11 and multiply == operationStartRight):
+					#numberIsNegative = true
+				#elif (Playfield[selX][selY] == 10 or Playfield[selX][selY] == 11 or Playfield[selX][selY] == 12 or Playfield[selX][selY] == 13 or Playfield[selX][selY] == 14):
+					#operationStartRight-=1
+					#operationEndRight = (multiply-1)
+					#breakForLoop = true
+#
+		#if (numberIsNegative == true):
+			#numberVal = numberVal * -1
+#
+		#currentEquationValue = currentEquationValue * numberVal
+#
+		#print("Val:", numberVal, " / Start:", operationStartRight, " / End:", operationEndRight)
+#
+	#MultiplyEquationValue = currentEquationValue
+#
+	#var computeValue = str(MultiplyEquationValue)
+#
+	#print("Multiply Value= ", computeValue)
+#
+	#var indexSaved = 0
+	#for index in range(0, operationStartLeft, 1):
+		#EquationStringNew[index] = EquationString[index]
+		#indexSaved+=1
+	#
+	#var indexTwo=0
+	#for index in range(indexSaved, indexSaved+len(computeValue), 1):
+		#EquationStringNew[index] = computeValue[indexTwo]
+		#indexTwo+=1
+#
+	#indexTwo = indexSaved+len(computeValue)
+	#for index in range( (operationEndRight+1) , TheEnd, 1 ):
+		#EquationStringNew[indexTwo] = EquationString[index]
+		#indexTwo+=1
+		#if (EquationString[index] == "E"):  index = 13
+#
+	#EquationStringNew[indexTwo] = "E"
+	#
+	#for index in range( (indexTwo+1), 29, 1):
+		#EquationStringNew[index] = "X"
+#
+#
+#
+#
+	#print("New= ", EquationStringNew)
+#
+#
+#
+#
+#
+
+
+
+
+
+
+
+
+
+
+
+
+
+	#print("EquationVal:", MultiplyEquationValue)
+#
+	#var indexTwo = 0
+	#var old = "xxxxxxxxxx"
+	#for index in range( operationStartLeft, (operationEndRight+1), 1 ):
+		#old[indexTwo] = EquationString[indexTwo]
+##		EquationStringSorted[indexTwo] = EquationString[index]
+		#indexTwo+=1
+#
+		#EquationString[index] = "X"
+#
+	#print(EquationString)
+#
+#	print(EquationStringSorted)
+
+
+
+
+
+
+
+
+
+
+
+
+
+#
+	#var equationOk = false
+	#var atLeastOneOperator = false
+	#var oneEqualFound = false
+	#var lastIsNumber = false
+	#var checkOperatorIndex = 0
+	#while (checkOperatorIndex < 10 and EquationString[checkOperatorIndex] != "E"):
+		#if (EquationString[checkOperatorIndex] == "+" or EquationString[checkOperatorIndex] == "-" or EquationString[checkOperatorIndex] == "*" or EquationString[checkOperatorIndex] == "/"):
+			#if (oneEqualFound == false):
+				#atLeastOneOperator = true
+				#lastIsNumber = false
+				#checkOperatorIndex+=1
+			#elif (oneEqualFound == true):
+				#equationOk = false
+				#checkOperatorIndex = 999
+		#elif (EquationString[checkOperatorIndex] == "="):
+			#if (atLeastOneOperator == true):
+				#oneEqualFound = true
+				#lastIsNumber = false
+				#equationOk = true
+				#checkOperatorIndex+=1
+			#else:
+				#equationOk = false
+				#checkOperatorIndex+=1
+		#else:
+			#lastIsNumber = true
+			#checkOperatorIndex+=1
+#
+	#if (lastIsNumber == false): equationOk = false
+#
+	#if (oneEqualFound == false): equationOk = false
+#
+	#if (atLeastOneOperator == false and oneEqualFound == true):  equationOk = false
+#
+	#if (equationOk == false):  return(returnValue)
+#
+	#var firstNumberNegative = false
+	#var index = 0
+	#if (EquationString[0] == "-"):
+		#firstNumberNegative = true
+		#index = 1
+#
+	#for numberClear in range(10):
+		#number[numberClear] = null
+#
+	#var numberIndex = 0
+	#var startOFNumberIndex = index
+	#var endOFNumberIndex = 0
+	#var endOfNumberFound = false
+#
+	#for mathOperatorClear in range(10):
+		#mathOperator[mathOperatorClear] = null
+#
+	#var mathOperatorIndex = 0
+#
+	#while (EquationString[index] != "E"):
+		#if (index < 10):
+			#startOFNumberIndex = index
+			#endOFNumberIndex = 0
+			#endOfNumberFound = false
+#
+			#while (endOfNumberFound == false and EquationString[index] != "E" and index < 9):
+				#if (index < 10 and endOfNumberFound == false):
+					#endOFNumberIndex = index
+#
+					#if   (EquationString[index] == "0"):
+						#endOfNumberFound = false
+						#index+=1
+					#elif (EquationString[index] == "1"):
+						#endOfNumberFound = false
+						#index+=1
+					#elif (EquationString[index] == "2"):
+						#endOfNumberFound = false
+						#index+=1
+					#elif (EquationString[index] == "3"):
+						#endOfNumberFound = false
+						#index+=1
+					#elif (EquationString[index] == "4"):
+						#endOfNumberFound = false
+						#index+=1
+					#elif (EquationString[index] == "5"):
+						#endOfNumberFound = false
+						#index+=1
+					#elif (EquationString[index] == "6"):
+						#endOfNumberFound = false
+						#index+=1
+					#elif (EquationString[index] == "7"):
+						#endOfNumberFound = false
+						#index+=1
+					#elif (EquationString[index] == "8"):
+						#endOfNumberFound = false
+						#index+=1
+					#elif (EquationString[index] == "9"):
+						#endOfNumberFound = false
+						#index+=1
+					#elif (index < 9 or mathOperatorIndex < 9 or EquationString[index] != "E"):
+						#endOfNumberFound = true
+						#if (EquationString[index] == "+"):
+							#mathOperator[mathOperatorIndex] = "+"
+							#index+=1
+							#mathOperatorIndex+=1
+						#elif (EquationString[index] == "-"):
+							#mathOperator[mathOperatorIndex] = "-"
+							#index+=1
+							#mathOperatorIndex+=1
+						#elif (EquationString[index] == "*"):
+							#mathOperator[mathOperatorIndex] = "*"
+							#index+=1
+							#mathOperatorIndex+=1
+						#elif (EquationString[index] == "/"):
+							#mathOperator[mathOperatorIndex] = "/"
+							#index+=1
+							#mathOperatorIndex+=1
+						#elif (EquationString[index] == "="):
+							#mathOperator[mathOperatorIndex] = "="
+							#index+=1
+							#mathOperatorIndex+=1
+					#else:
+						#endOfNumberFound = true
+#
+			#var multiplier = 1
+			#if (numberIndex < 10):
+				#number[numberIndex] = 0
+#
+				#for indexTwo in range(endOFNumberIndex, startOFNumberIndex-1, -1):
+					#if   (EquationString[indexTwo] == "0"):
+						#number[numberIndex]+=(0 * multiplier)
+						#multiplier = multiplier * 10
+					#elif (EquationString[indexTwo] == "1"):
+						#number[numberIndex]+=(1 * multiplier)
+						#multiplier = multiplier * 10
+					#elif (EquationString[indexTwo] == "2"):
+						#number[numberIndex]+=(2 * multiplier)
+						#multiplier = multiplier * 10
+					#elif (EquationString[indexTwo] == "3"):
+						#number[numberIndex]+=(3 * multiplier)
+						#multiplier = multiplier * 10
+					#elif (EquationString[indexTwo] == "4"):
+						#number[numberIndex]+=(4 * multiplier)
+						#multiplier = multiplier * 10
+					#elif (EquationString[indexTwo] == "5"):
+						#number[numberIndex]+=(5 * multiplier)
+						#multiplier = multiplier * 10
+					#elif (EquationString[indexTwo] == "6"):
+						#number[numberIndex]+=(6 * multiplier)
+						#multiplier = multiplier * 10
+					#elif (EquationString[indexTwo] == "7"):
+						#number[numberIndex]+=(7 * multiplier)
+						#multiplier = multiplier * 10
+					#elif (EquationString[indexTwo] == "8"):
+						#number[numberIndex]+=(8 * multiplier)
+						#multiplier = multiplier * 10
+					#elif (EquationString[indexTwo] == "9"):
+						#number[numberIndex]+=(9 * multiplier)
+						#multiplier = multiplier * 10
+#
+				#numberIndex+=1
+#
+			#BonusScore+=(multiplier)
+#
+	#if (firstNumberNegative == true):
+		#if (number[0] != null):
+			#number[0]-=(number[0] * 2)
+#
+	#var totalAmount = 0
+#
+	#var multiplyValue = 0
+	#var multiplyOperatorIndex = 0
+	#if (MultiplyIndex != null):
+		#while (mathOperator[multiplyOperatorIndex] != "*" and multiplyOperatorIndex < 8):
+			#multiplyOperatorIndex+=1
+#
+		#multiplyValue = number[multiplyOperatorIndex] * number[multiplyOperatorIndex + 1]
+		#totalAmount = multiplyValue
+#
+		#number[multiplyOperatorIndex] = multiplyValue
+#
+	#var floatDetected = false
+	#var divideValue = 0
+	#float(divideValue)
+	#var divideOperatorIndex = 0
+	#if (DivideIndex != null):
+		#while (mathOperator[divideOperatorIndex] != "/" and divideOperatorIndex < 8):
+			#divideOperatorIndex+=1
+#
+		#divideValue = float(float(number[divideOperatorIndex]) / float(number[divideOperatorIndex + 1]))
+		#var decimalCheck
+#
+		#decimalCheck = fmod(divideValue, 1.0)
+		#if (decimalCheck != 0.0):  floatDetected = true
+#
+		#if (floatDetected == false):
+			#totalAmount = int(divideValue)
+			#
+			#number[divideOperatorIndex] = divideValue
+#
+	#if (floatDetected == false):
+		#var additionValue = 0
+		#var additionOperatorIndex = 0
+		#if (PlusIndex != null):
+			#while (mathOperator[additionOperatorIndex] != "+" and additionOperatorIndex < 8):
+				#additionOperatorIndex+=1
+#
+			#additionValue = number[additionOperatorIndex] + number[additionOperatorIndex + 1]
+			#totalAmount = additionValue
+#
+			#number[additionOperatorIndex] = additionValue
+#
+	#if (floatDetected == false):
+		#var subtractionValue = 0
+		#var subtractionOperatorIndex = 0
+		#if (MinusIndex != null):
+			#while (mathOperator[subtractionOperatorIndex] != "-" and subtractionOperatorIndex < 8):
+				#subtractionOperatorIndex+=1
+#
+			#subtractionValue = number[subtractionOperatorIndex] - number[subtractionOperatorIndex + 1]
+			#totalAmount = subtractionValue
+#
+			#number[subtractionOperatorIndex] = subtractionValue
+#
+	#if (floatDetected == false):
+		#var equationIndex = -1
+		#var equalFound = false
+		#while (equationIndex < 9 and equalFound == false):
+			#equationIndex+=1
+			#if (equalFound == false):
+				#if (mathOperator[equationIndex] != null):
+					#if (mathOperator[equationIndex] == "="):
+						#if (number[equationIndex + 1] != null):
+							#if (totalAmount == number[equationIndex + 1]):
+								#if (LogicCore.SecretCodeCombined != 2778):
+									#TotalClearedTiles+=CurrentClearedTiles
+								#else:
+									#TotalClearedTiles = ( LevelAdvance[GameMode]) + (5*(Level+1) + 1)
+#
+								#CurrentClearedTiles = 0
+#
+								#if ( TotalClearedTiles > ( LevelAdvance[GameMode]) ):
+									#AudioCore.PlayEffect(8)
+									#TotalClearedTiles = 0
+									#LevelAdvance[GameMode]+=10
+									#Level+=1
+#
+									#if (Level == 4):  AudioCore.PlayMusic(2, true)
+									#elif (Level == 6):  AudioCore.PlayMusic(3, true)
+									#elif (Level == 8):  AudioCore.PlayMusic(4, true)
+									#elif (Level == 9):  AudioCore.PlayMusic(5, true)
+#
+									#if (GameMode < 4):
+										#CutSceneAlpha = 0.0
+										#CutSceneScale = 2.0
+										#CutSceneTimer = 0
+										#
+										#if (Level == 10):
+											#StillPlaying = false
+											#GameWon = true
+										#else:
+											#ScreensCore.ScreenFadeStatus = ScreensCore.FadingToBlack
+									#else:
+										#CutSceneAlpha = 0.0
+										#CutSceneScale = 0.0
+										#CutSceneTimer = 0
+#
+								#equalFound = true
+								#returnValue = true
+								#DrawEverything = true
+								#ScoreChanged = true
+							#else:
+								#equalFound = true
+								#returnValue = false
+								#BonusScore = 0
+#
+	#DrawEverything = true
+	#ScoreChanged = true
+
+	return(returnValue)
+
+#----------------------------------------------------------------------------------------
+func RunGameplayCore():
+	if (GameState == FadingTiles):
+		DrawEverything = true
+
+		BonusScore = 0
+
+		SelectedTilesAlpha-=0.1
+		if (SelectedTilesAlpha < 0.0):
+			SelectedTilesAlpha = 0.0
+			GameState = ApplyingGravity
+
+			for index in range(10):
+				for y in range(7):
+					for x in range(12):
+						if (Playfield[x][y] > -1):
+							if (SelectedTilePlayfieldX[index] == x and SelectedTilePlayfieldY[index] == y):
+								Playfield[x][y] = -1
+								index+=1
+
+			for index in range(10):
+				SelectedTilePlayfieldX[index] = -1
+				SelectedTilePlayfieldY[index] = -1
+
+			SelectedTileIndex = 0
+
+			ThereIsAnEqual = false
+	elif (GameState == ApplyingGravity):
+		DrawEverything = true
+
+		SelectedTilesAlpha = 1.0
+
+		for y in range(7):
+			for x in range(12):
+				if (Playfield[x][y] == -1 and Playfield[x][y+1] > -1):
+					for yTwo in range(y+1, 8):
+						Playfield[x][yTwo-1] = Playfield[x][yTwo]
+					
+					Playfield[x][7] = -1
+
+		PiecesCanStillFall = false
+		for y in range(7):
+			for x in range(12):
+				if (Playfield[x][y] == -1 and Playfield[x][y+1] > -1):
+					PiecesCanStillFall = true
+
+		if (PiecesCanStillFall == false):
+			GameState = Playing
+			DrawEverything = true
+	elif (GameState == Playing):
+		CurrentHeightOfPlayfield = 0
+		for y in range(7):
+			for x in range(12):
+				if (LogicCore.Playfield[x][y] > -1):
+					if (y > CurrentHeightOfPlayfield):
+						CurrentHeightOfPlayfield = y
+
+		var allowTileSelection = false
+		var xPos = -1
+		var yPos = -1
+
+		FallingTileYoffset+=5
+		if (CurrentHeightOfPlayfield < 3):
+			FallingTileYoffset+=15
+
+		if (FallingTileYoffset > 75):
+			FallingTileYoffset = 0
+			FallingTileScreenY+=75
+			FallingTileY-=1
+
+			if (FallingTileY == 0):
+				Playfield[FallingTileX][FallingTileY] = FallingTile
+				SetUpNextFallingTile()
+			elif (Playfield[FallingTileX][FallingTileY-1] > -1):
+				Playfield[FallingTileX][FallingTileY] = FallingTile
+				SetUpNextFallingTile()
+
+		if (InputCore.MouseButtonLeftPressed == true and TileClicked == false):
+			ConvertTilesToString()
+			var screenY = 500-37
+			var screenX = 99
+			for y in range(7):
+				for x in range(12):
+					if (Playfield[x][y] > -1):
+						TileClicked = true
+
+						DrawEverything = true
+
+						TileSelectedDrawTwiceBandaid = 2
+
+						if (SelectedTileIndex < 10):
+							var mY = InputCore.MouseScreenY
+							var mX = InputCore.MouseScreenX
+							if (mY > (screenY - 37) and mY < (screenY + 37) and mX > (screenX - 37) and mX < (screenX + 37)):
+								xPos = x
+								yPos = y
+								var selected = false
+								for index in range(0, 10):
+									if (SelectedTilePlayfieldX[index] == x and SelectedTilePlayfieldY[index] == y):
+										selected = true
+
+								if (selected == false):
+									if (SelectedTileIndex == 0):
+										if ( (Playfield[x][y] > 0 and Playfield[x][y] < 10) or (Playfield[x][y] == 11) ):
+											allowTileSelection = true
+									elif (SelectedTileIndex > 0):
+										var posX = SelectedTilePlayfieldX[SelectedTileIndex-1]
+										var posY = SelectedTilePlayfieldY[SelectedTileIndex-1]
+
+										if ( (Playfield[x][y] > -1 and Playfield[x][y] < 10) ):
+											allowTileSelection = true
+											
+											if ( Playfield[x][y] == 0 and (Playfield[posX][posY] == 10 or Playfield[posX][posY] == 11 or Playfield[posX][posY] == 12 and Playfield[posX][posY] == 13) ):
+												allowTileSelection = false
+
+											if ( Playfield[x][y] == 0 and (Playfield[posX][posY] == 14) ):
+												allowTileSelection = false
+
+											if ( Playfield[x][y] == 0 and (Playfield[posX][posY] == 13) ):
+												allowTileSelection = false
+										elif (Playfield[posX][posY] > -1 and Playfield[posX][posY] < 10):
+											if (ThereIsAnEqual == false):
+												if (Playfield[x][y] == 10):
+													if (PlusIndex == -1):
+														allowTileSelection = true
+												elif (Playfield[x][y] == 11):
+													if (MinusIndex == -1):
+														allowTileSelection = true
+												elif (Playfield[x][y] == 12):
+													if (MultiplyIndex == -1):
+														allowTileSelection = true
+												elif (Playfield[x][y] == 13):
+													if (DivideIndex == -1):
+														allowTileSelection = true
+
+											if (Playfield[x][y] == 14 and SelectedTileIndex > 2 and ThereIsAnOperator == true):
+												if (ThereIsAnEqual == false):
+													allowTileSelection = true
+
+										if (Playfield[x][y] == 11 and (Playfield[posX][posY] == 10 or Playfield[posX][posY] == 12 or Playfield[posX][posY] == 13) ):
+											allowTileSelection = true
+
+										if (Playfield[x][y] == 0 and Playfield[posX][posY] == 12):
+											allowTileSelection = false
+
+					screenX+=75
+
+				screenX = 99
+				screenY-=75
+
+		if (allowTileSelection == true):
+			SelectedTilePlayfieldX[SelectedTileIndex] = xPos
+			SelectedTilePlayfieldY[SelectedTileIndex] = yPos
+			SelectedTileIndex+=1
+			ConvertTilesToString()
+#			print(EquationString)
+			AudioCore.PlayEffect(0)
+
+		if (TileSelectedDrawTwiceBandaid > 0):
+			TileSelectedDrawTwiceBandaid-=1
+			DrawEverything = true
+
+	pass
+
+#----------------------------------------------------------------------------------------
+func _ready():
+	SecretCode.append(0)
+	SecretCode.append(0)
+	SecretCode.append(0)
+	SecretCode.append(0)
+
+	LogicCore.SecretCodeCombined = 0000
+
+	LevelAdvance.resize(8)
+	LevelAdvance[ChildStoryMode] = 15
+	LevelAdvance[TeenStoryMode]  = (15 * 3)
+	LevelAdvance[AdultStoryMode] = (15 * 2)
+	LevelAdvance[TurboStoryMode] = (15 * 4)
+	LevelAdvance[ChildNeverMode] = 15
+	LevelAdvance[TeenNeverMode]  = (15 * 3)
+	LevelAdvance[AdultNeverMode] = (15 * 2)
+	LevelAdvance[TurboNeverMode] = (15 * 4)
+
+	Playfield.resize(12)
+	for x in range(12):
+		Playfield[x] = []
+		Playfield[x].resize(8)
+		for y in range(8):
+			Playfield[x][y] = []
+
+	TileSpriteIndex.resize(16)
+
+	Score = 0
+	Level = 0
+
+	SelectedTilePlayfieldX.resize(10)
+	SelectedTilePlayfieldY.resize(10)
+
+	SelectedTileIndex = 0
+
+	UndoButtonDelay = 0
+
+	BadEquationRedTimer = 0
+
+	EquationString = ""
+#	EquationStringSorted = ""
+
+	DrawEverything = true
+	ScoreChanged = true
+	ThereIsAnEqual = false
+
+	GameState = Playing
+
+	SelectedTilesAlpha = 1.0
+
+	PiecesCanStillFall = false
+
+	PlusIndex = -1
+	MinusIndex = -1
+	MultiplyIndex = -1
+	DivideIndex = -1
+	EqualIndex = -1
+
+	number.resize(10)
+	mathOperator.resize(10)
+
+	TileSelectedDrawTwiceBandaid = 0
+
+	pass
+
+#----------------------------------------------------------------------------------------
+func _process(_delta):
+
+	pass
