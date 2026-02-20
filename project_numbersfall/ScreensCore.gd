@@ -1521,6 +1521,7 @@ func DisplayPlayingGameScreen():
 			for indexTwo in range(99):
 				RenderingServer.canvas_item_set_transform(VisualsCore.Sprites.ci_rid[(300+indexTwo) + (100*index)], Transform2D(0.0, Vector2(1.0, 1.0), 0.0, Vector2(-99999, -99999)))
 
+		var selectedIndex = 0
 		var screenY = 500-37
 		var screenX = 99
 		for y in range(7):
@@ -1530,7 +1531,14 @@ func DisplayPlayingGameScreen():
 
 					for index in range(0, LogicCore.SelectedTileIndex):
 						if (LogicCore.SelectedTilePlayfieldX[index] == x and LogicCore.SelectedTilePlayfieldY[index] == y):
-							RenderingServer.canvas_item_set_modulate(VisualsCore.Sprites.ci_rid[300+LogicCore.TileSpriteIndex[LogicCore.Playfield[x][y]] + (100*LogicCore.Playfield[x][y])], Color(0.0, 1.0, 0.0, LogicCore.SelectedTilesAlpha))
+							VisualsCore.DrawSprite(300+LogicCore.TileSpriteIndex[LogicCore.Playfield[x][y]] + (100*LogicCore.Playfield[x][y]), screenX, screenY, 1.0, 1.0, 0, 1.0, 1.0, 1.0, LogicCore.SelectedTilesAlpha)
+
+							if (LogicCore.GameState != LogicCore.FadingTiles):
+								VisualsCore.DrawSprite(1800+selectedIndex, screenX, screenY, 1.0, 1.0, 0, 1.0, 1.0, 1.0, 0.5)
+							elif (LogicCore.GameState == LogicCore.FadingTiles):
+								VisualsCore.DrawSprite(1800+selectedIndex, screenX, screenY, 1.0, 1.0, 0, 1.0, 1.0, 1.0, 0.0)
+
+							selectedIndex+=1
 
 					LogicCore.TileSpriteIndex[LogicCore.Playfield[x][y]]+=1
 

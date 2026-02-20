@@ -294,6 +294,10 @@ func _ready():
 		Sprites.SpriteImage[1700+index] = load("res://media/images/playing/TileEqual.png")
 		Sprites.SpriteActive[1700+index] = true
 
+	for index in range(0, 99):
+		Sprites.SpriteImage[1800+index] = load("res://media/images/playing/Selected.png")
+		Sprites.SpriteActive[1800+index] = true
+
 	Sprites.SpriteImage[1900] = load("res://media/images/playing/UndoButton.png")
 	Sprites.SpriteActive[1900] = true
 
@@ -380,6 +384,8 @@ func _ready():
 				RenderingServer.canvas_item_set_draw_index(Sprites.ci_rid[index], -5)
 			elif (index > 9999 and index < 19980):
 				RenderingServer.canvas_item_set_draw_index(Sprites.ci_rid[index], -2)
+			elif (index > 1800 and index < 1900):
+				RenderingServer.canvas_item_set_draw_index(Sprites.ci_rid[index], 5)
 			elif (index == 131):
 				RenderingServer.canvas_item_set_draw_index(Sprites.ci_rid[index], -99999)
 			elif (index == 132):
@@ -491,6 +497,7 @@ func DrawSprite(index, x, y, scaleX, scaleY, rotationDegree, red, green, blue, a
 	sprite_size.x = sprite_size.x * scaleX
 	sprite_size.y = sprite_size.y * scaleY
 	RenderingServer.canvas_item_set_transform(Sprites.ci_rid[index], Transform2D(rotationDegree, Vector2(scaleX, scaleY), 0.0, Vector2(x - (sprite_size.x / 2.0), y - (sprite_size.y / 2.0))))
+
 	RenderingServer.canvas_item_set_modulate(Sprites.ci_rid[index], Color(red, green, blue, alpha))
 
 	Sprites.SpriteActive[index] = true
