@@ -7,6 +7,6 @@
 
 [Documentation to convert Godot game to Flatpak!](https://cassidyjames.com/blog/publish-godot-engine-game-flathub-flatpak/)
 
-![Title Screenshot](/project_numbersfall/Screen_Shots/First-LF-Title.png " ")
+![Title Screenshot](/project_numbersfall/Screen_Shots/First-NF-Title.png " ")
 
-![Playing Screenshot](/project_numbersfall/Screen_Shots/Second-LF-Playing.png " ")
+![Playing Screenshot](/project_numbersfall/Screen_Shots/Second-NF-Playing.png " ")
