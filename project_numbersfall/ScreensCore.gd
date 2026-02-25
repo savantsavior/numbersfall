@@ -377,9 +377,13 @@ func DisplayTitleScreen():
 		VisualsCore.DrawSprite(32, VisualsCore.ScreenWidth/2.0, 602-15+18, 2.85, 2.0, 0, 1.0, 1.0, 0.0, 1.0)
 		VisualsCore.DrawText(VisualsCore.TextCurrentIndex, "(C)2026 By TeamJeZxLee.Itch.io", 0, 640-19-4-15+10, 1, 0, 35, 1.0, 1.0, 0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0)
 
-		VisualsCore.DrawText(VisualsCore.TextCurrentIndex, "v1.1.0 Release Candidate 2", 10, VisualsCore.ScreenHeight-15, 0, 1, 15, 1.0, 1.0, 0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0)
+		VisualsCore.DrawText(VisualsCore.TextCurrentIndex, LogicCore.Version, 10, VisualsCore.ScreenHeight-15, 0, 1, 15, 1.0, 1.0, 0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0)
 
 		InterfaceCore.ArrowSetSelectedByKeyboardLast = -1
+
+		for index in range(20):
+			for indexTwo in range(999):
+				RenderingServer.canvas_item_set_transform(VisualsCore.Sprites.ci_rid[(20000+indexTwo) + (1000*index)], Transform2D(0.0, Vector2(1.0, 1.0), 0.0, Vector2(-99999, -99999)))
 
 		LogicCore.GameWon = false
 
@@ -1125,16 +1129,16 @@ func DisplayHowToPlayScreen():
 		VisualsCore.DrawText(VisualsCore.TextCurrentIndex, "Pieces will fall from the top of the playfield.", 0, 35+30-10, 1, 0, 45, 1.0, 1.0, 0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0)
 		VisualsCore.DrawText(VisualsCore.TextCurrentIndex, "Select pieces that have fell & form valid equations.", 0, 35+30+40-10, 1, 0, 45, 1.0, 1.0, 0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0)
 
-		VisualsCore.DrawSprite(401, VisualsCore.ScreenWidth/2.0 - 360, 173, 1.0, 1.0, 0, 1.0, 1.0, 1.0, 1.0)
-		VisualsCore.DrawSprite(301, VisualsCore.ScreenWidth/2.0 - 280, 173, 1.0, 1.0, 0, 1.0, 1.0, 1.0, 1.0)
-		VisualsCore.DrawSprite(302, VisualsCore.ScreenWidth/2.0 - 200, 173, 1.0, 1.0, 0, 1.0, 1.0, 1.0, 1.0)
-		VisualsCore.DrawSprite(1300, VisualsCore.ScreenWidth/2.0 - 120, 173, 1.0, 1.0, 0, 1.0, 1.0, 1.0, 1.0)
-		VisualsCore.DrawSprite(400, VisualsCore.ScreenWidth/2.0 - 40, 173, 1.0, 1.0, 0, 1.0, 1.0, 1.0, 1.0)
-		VisualsCore.DrawSprite(300, VisualsCore.ScreenWidth/2.0 + 40, 173, 1.0, 1.0, 0, 1.0, 1.0, 1.0, 1.0)
-		VisualsCore.DrawSprite(1700, VisualsCore.ScreenWidth/2.0 + 120, 173, 1.0, 1.0, 0, 1.0, 1.0, 1.0, 1.0)
-		VisualsCore.DrawSprite(402, VisualsCore.ScreenWidth/2.0 + 200, 173, 1.0, 1.0, 0, 1.0, 1.0, 1.0, 1.0)
-		VisualsCore.DrawSprite(403, VisualsCore.ScreenWidth/2.0 + 280, 173, 1.0, 1.0, 0, 1.0, 1.0, 1.0, 1.0)
-		VisualsCore.DrawSprite(303, VisualsCore.ScreenWidth/2.0 + 360, 173, 1.0, 1.0, 0, 1.0, 1.0, 1.0, 1.0)
+		VisualsCore.DrawSprite(21001, VisualsCore.ScreenWidth/2.0 - 225, 173, 1.0, 1.0, 0, 1.0, 1.0, 1.0, 1.0)
+		VisualsCore.DrawSprite(20001, VisualsCore.ScreenWidth/2.0 - 175, 173, 1.0, 1.0, 0, 1.0, 1.0, 1.0, 1.0)
+		VisualsCore.DrawSprite(20002, VisualsCore.ScreenWidth/2.0 - 125, 173, 1.0, 1.0, 0, 1.0, 1.0, 1.0, 1.0)
+		VisualsCore.DrawSprite(30000, VisualsCore.ScreenWidth/2.0 - 75, 173, 1.0, 1.0, 0, 1.0, 1.0, 1.0, 1.0)
+		VisualsCore.DrawSprite(21000, VisualsCore.ScreenWidth/2.0 - 25, 173, 1.0, 1.0, 0, 1.0, 1.0, 1.0, 1.0)
+		VisualsCore.DrawSprite(20000, VisualsCore.ScreenWidth/2.0 + 25, 173, 1.0, 1.0, 0, 1.0, 1.0, 1.0, 1.0)
+		VisualsCore.DrawSprite(35000, VisualsCore.ScreenWidth/2.0 + 75, 173, 1.0, 1.0, 0, 1.0, 1.0, 1.0, 1.0)
+		VisualsCore.DrawSprite(21002, VisualsCore.ScreenWidth/2.0 + 125, 173, 1.0, 1.0, 0, 1.0, 1.0, 1.0, 1.0)
+		VisualsCore.DrawSprite(21003, VisualsCore.ScreenWidth/2.0 + 175, 173, 1.0, 1.0, 0, 1.0, 1.0, 1.0, 1.0)
+		VisualsCore.DrawSprite(20003, VisualsCore.ScreenWidth/2.0 + 225, 173, 1.0, 1.0, 0, 1.0, 1.0, 1.0, 1.0)
 
 		VisualsCore.DrawText(VisualsCore.TextCurrentIndex, "Valid equations will be removed from the playfield.", 0, 35+30+40+40+70, 1, 0, 45, 1.0, 1.0, 0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0)
 		VisualsCore.DrawText(VisualsCore.TextCurrentIndex, "As you form equations, new pieces will fall from top.", 0, 35+30+40+40+70+40, 1, 0, 45, 1.0, 1.0, 0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0)
@@ -1297,6 +1301,10 @@ func DisplayAboutScreen():
 		TS1ScreenY = (VisualsCore.Texts.TextImage[VisualsCore.AboutTextsEndIndex-1].global_position.y + 390+150)
 		StaffScreenTSOneScale = 1.0
 		VisualsCore.DrawSprite(23, VisualsCore.ScreenWidth/2.0, TS1ScreenY, StaffScreenTSOneScale, StaffScreenTSOneScale, 0, 1.0, 1.0, 1.0, 1.0)
+
+		for index in range(20):
+			for indexTwo in range(999):
+				RenderingServer.canvas_item_set_transform(VisualsCore.Sprites.ci_rid[(20000+indexTwo) + (1000*index)], Transform2D(0.0, Vector2(1.0, 1.0), 0.0, Vector2(-99999, -99999)))
 
 		TSOneDisplayTimer = 125
 
@@ -1481,10 +1489,10 @@ func DisplayPlayingGameScreen():
 
 		InterfaceCore.CreateIcon(117, 31, VisualsCore.ScreenHeight-31, " ")
 
-		InterfaceCore.CreateIcon(1900, (99 + (75*10)), -99999, " ")
+		InterfaceCore.CreateIcon(2001, (99 - 11 + (50*16)), -99999, " ")
 
-		InterfaceCore.CreateIcon(1901, (99 + (75*11)), 600-50, " ")
-		RenderingServer.canvas_item_set_modulate(VisualsCore.Sprites.ci_rid[1901], Color(0.0, 1.0, 0.0, 1.0))
+		InterfaceCore.CreateIcon(2002, (99 - 11 + (50*17)), 600-50-1, " ")
+		RenderingServer.canvas_item_set_modulate(VisualsCore.Sprites.ci_rid[2002], Color(0.0, 1.0, 0.0, 1.0))
 
 		InterfaceCore.CreateIcon(118, VisualsCore.ScreenWidth-30, VisualsCore.ScreenHeight-30, " ")
 
@@ -1514,62 +1522,62 @@ func DisplayPlayingGameScreen():
 				VisualsCore.DrawSprite(3000+LogicCore.Level, (VisualsCore.ScreenWidth/2.0), (VisualsCore.ScreenHeight/2.0), LogicCore.CutSceneScale, LogicCore.CutSceneScale, 0, 1.0, 1.0, 1.0, LogicCore.CutSceneAlpha)
 
 	for index in range(16):
-		LogicCore.TileSpriteIndex[index] = 0
+		LogicCore.TileSpriteIndex[index] = 1
 
 	if (LogicCore.DrawEverything == true):
-		for index in range(16):
-			for indexTwo in range(99):
-				RenderingServer.canvas_item_set_transform(VisualsCore.Sprites.ci_rid[(300+indexTwo) + (100*index)], Transform2D(0.0, Vector2(1.0, 1.0), 0.0, Vector2(-99999, -99999)))
+		for index in range(20):
+			for indexTwo in range(999):
+				RenderingServer.canvas_item_set_transform(VisualsCore.Sprites.ci_rid[(20000+indexTwo) + (1000*index)], Transform2D(0.0, Vector2(1.0, 1.0), 0.0, Vector2(-99999, -99999)))
 
 		var selectedIndex = 0
-		var screenY = 500-37
-		var screenX = 99
-		for y in range(7):
-			for x in range(12):
+		var screenY = 500-37+11
+		var screenX = 99-11
+		for y in range(12):
+			for x in range(18):
 				if (LogicCore.Playfield[x][y] > -1):
-					VisualsCore.DrawSprite(300+LogicCore.TileSpriteIndex[LogicCore.Playfield[x][y]] + (100*LogicCore.Playfield[x][y]), screenX, screenY, 1.0, 1.0, 0, 1.0, 1.0, 1.0, 1.0)
+					VisualsCore.DrawSprite(20000+LogicCore.TileSpriteIndex[LogicCore.Playfield[x][y]] + (1000*LogicCore.Playfield[x][y]), screenX, screenY, 1.0, 1.0, 0, 1.0, 1.0, 1.0, 1.0)
 
 					for index in range(0, LogicCore.SelectedTileIndex):
 						if (LogicCore.SelectedTilePlayfieldX[index] == x and LogicCore.SelectedTilePlayfieldY[index] == y):
-							VisualsCore.DrawSprite(300+LogicCore.TileSpriteIndex[LogicCore.Playfield[x][y]] + (100*LogicCore.Playfield[x][y]), screenX, screenY, 1.0, 1.0, 0, 1.0, 1.0, 1.0, LogicCore.SelectedTilesAlpha)
+							VisualsCore.DrawSprite(20000+LogicCore.TileSpriteIndex[LogicCore.Playfield[x][y]] + (1000*LogicCore.Playfield[x][y]), screenX, screenY, 1.0, 1.0, 0, 1.0, 1.0, 1.0, LogicCore.SelectedTilesAlpha)
 
 							if (LogicCore.GameState != LogicCore.FadingTiles):
-								VisualsCore.DrawSprite(1800+selectedIndex, screenX, screenY, 1.0, 1.0, 0, 1.0, 1.0, 1.0, 0.5)
+								VisualsCore.DrawSprite(36000+selectedIndex, screenX, screenY, 1.0, 1.0, 0, 1.0, 1.0, 1.0, 0.5)
 							elif (LogicCore.GameState == LogicCore.FadingTiles):
-								VisualsCore.DrawSprite(1800+selectedIndex, screenX, screenY, 1.0, 1.0, 0, 1.0, 1.0, 1.0, 0.0)
+								VisualsCore.DrawSprite(36000+selectedIndex, screenX, screenY, 1.0, 1.0, 0, 1.0, 1.0, 1.0, 0.0)
 
 							selectedIndex+=1
 
 					LogicCore.TileSpriteIndex[LogicCore.Playfield[x][y]]+=1
 
-				screenX+=75
+				screenX+=50
 			
-			screenX = 99
-			screenY-=75
+			screenX = 99-11
+			screenY-=50
 
 		screenY = 500-37+86
-		screenX = 99
+		screenX = 99-11
 
 		for index in range(16):
-			LogicCore.TileSpriteIndex[index] = 89
+			LogicCore.TileSpriteIndex[index] = 900
 
-		for index in range(10):
+		for index in range(16):
 			if (LogicCore.SelectedTilePlayfieldX[index] > -1 and LogicCore.SelectedTilePlayfieldY[index] > -1):
-				VisualsCore.DrawSprite(300+LogicCore.TileSpriteIndex[LogicCore.Playfield[LogicCore.SelectedTilePlayfieldX[index]][LogicCore.SelectedTilePlayfieldY[index]]] + (100*LogicCore.Playfield[LogicCore.SelectedTilePlayfieldX[index]][LogicCore.SelectedTilePlayfieldY[index]]), screenX, screenY, 1.0, 1.0, 0, 1.0, 1.0, 1.0, LogicCore.SelectedTilesAlpha)
+				VisualsCore.DrawSprite(20000+LogicCore.TileSpriteIndex[LogicCore.Playfield[LogicCore.SelectedTilePlayfieldX[index]][LogicCore.SelectedTilePlayfieldY[index]]] + (1000*LogicCore.Playfield[LogicCore.SelectedTilePlayfieldX[index]][LogicCore.SelectedTilePlayfieldY[index]]), screenX, screenY, 1.0, 1.0, 0, 1.0, 1.0, 1.0, LogicCore.SelectedTilesAlpha)
 				LogicCore.TileSpriteIndex[LogicCore.Playfield[LogicCore.SelectedTilePlayfieldX[index]][LogicCore.SelectedTilePlayfieldY[index]]]+=1
 
-			screenX+=75
+			screenX+=50
 
 		LogicCore.DrawEverything = false
 
 	if (LogicCore.GameWon == false):
-		VisualsCore.DrawSprite(300 + (100*LogicCore.FallingTile) + 85, LogicCore.FallingTileScreenX, LogicCore.FallingTileScreenY+LogicCore.FallingTileYoffset, 1.0, 1.0, 0, 1.0, 1.0, 1.0, 1.0)
+		if (LogicCore.GameOver == false):  VisualsCore.DrawSprite(20000 + (1000*LogicCore.FallingTile), LogicCore.FallingTileScreenX, LogicCore.FallingTileScreenY+LogicCore.FallingTileYoffset, 1.0, 1.0, 0, 1.0, 1.0, 1.0, 1.0)
 
 		if (LogicCore.GameOver == true):
 			ScreenFadeStatus = FadingToBlack
 
 		if (LogicCore.SelectedTileIndex > 0):
-			InterfaceCore.Icons.IconScreenY[1] = 600-50
+			InterfaceCore.Icons.IconScreenY[1] = 600-50-1
 		else:
 			InterfaceCore.Icons.IconScreenY[1] = -99999
 
@@ -1578,7 +1586,7 @@ func DisplayPlayingGameScreen():
 		if (LogicCore.BadEquationRedTimer > 0):
 			LogicCore.BadEquationRedTimer-=1
 			if (LogicCore.BadEquationRedTimer == 1):
-				RenderingServer.canvas_item_set_modulate(VisualsCore.Sprites.ci_rid[1901], Color(0.0, 1.0, 0.0, 1.0))
+				RenderingServer.canvas_item_set_modulate(VisualsCore.Sprites.ci_rid[2002], Color(0.0, 1.0, 0.0, 1.0))
 
 		if (LogicCore.PAUSEgame == false):
 			if InterfaceCore.ThisIconWasPressed(0, -1) == true:
@@ -1586,6 +1594,7 @@ func DisplayPlayingGameScreen():
 				ScreenFadeStatus = FadingToBlack
 				LogicCore.StillPlaying = false
 				LogicCore.GameQuit = true
+				LogicCore.GameOver = true
 				InputCore.MouseButtonLeftPressed = false
 				InputCore.DelayAllUserInput = 35
 			elif InterfaceCore.ThisIconWasPressed(1, -1) == true:
@@ -1610,7 +1619,7 @@ func DisplayPlayingGameScreen():
 					if (LogicCore.BadEquationRedTimer == 0):
 						if ( LogicCore.CheckEquationNewPerfect() == false ):
 							AudioCore.PlayEffect(6)
-							RenderingServer.canvas_item_set_modulate(VisualsCore.Sprites.ci_rid[1901], Color(1.0, 0.0, 0.0, 1.0))
+							RenderingServer.canvas_item_set_modulate(VisualsCore.Sprites.ci_rid[2002], Color(1.0, 0.0, 0.0, 1.0))
 							LogicCore.BadEquationRedTimer = 20
 						else:
 							AudioCore.PlayEffect(7)
@@ -1665,6 +1674,12 @@ func DisplayPlayingGameScreen():
 	if ScreenFadeStatus == FadingToBlack && ScreenFadeTransparency == 0.5:
 		VisualsCore.SetFramesPerSecond(30)
 		InputCore.MouseButtonLeftPressed = false
+
+		for index in range(20):
+			for indexTwo in range(999):
+				RenderingServer.canvas_item_set_transform(VisualsCore.Sprites.ci_rid[(20000+indexTwo) + (1000*index)], Transform2D(0.0, Vector2(1.0, 1.0), 0.0, Vector2(-99999, -99999)))
+
+#		VisualsCore.DrawSprite(20000 + (1000*LogicCore.FallingTile), LogicCore.FallingTileScreenX, LogicCore.FallingTileScreenY+LogicCore.FallingTileYoffset, 1.0, 1.0, 0, 1.0, 1.0, 1.0, 1.0)
 
 		if (LogicCore.StillPlaying == false):
 			if (LogicCore.GameQuit == true):

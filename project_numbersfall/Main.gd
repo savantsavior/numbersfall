@@ -30,7 +30,7 @@
 #                                               TM
 #                              "NumbersFall 110%"
 #
-#                   Retail Version 1.1.0 Release Candidate 2c
+#                    Retail Version 1.1.0 Release Candidate 3
 #
 #                            Linux Flatpak On Flathub
 #                 HTML5 Enabled Desktop/Laptop Internet Browsers

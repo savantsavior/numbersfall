@@ -18,7 +18,7 @@
 # "LogicCore.gd"
 extends Node2D
 
-var Version = "Retail Version 1.1.0 RC 2"
+var Version = "Retail 1.1.0 Release Candidate 3"
 
 const ChildStoryMode				= 0
 const TeenStoryMode					= 2
@@ -103,6 +103,8 @@ var MinusIndex
 var MinusTwoIndex
 var MultiplyIndex
 var DivideIndex
+var DecimalIndex
+var DecimalTwoIndex
 var EqualIndex
 
 var TheEnd
@@ -124,8 +126,6 @@ var CutSceneBlackBackgroundAlpha
 var UndoAction = 1
 
 var TileClicked = false
-
-var EqualIsNegative = false
 
 var EnableRightClick = 1
 
@@ -150,14 +150,14 @@ func SetupForNewGame():
 
 	GameWon = false
 
-	for y in range(0, 8):
-		for x in range(0, 12):
+	for y in range(0, 12):
+		for x in range(0, 18):
 			Playfield[x][y] = -1
 
 	var allTilesShown = false
 	while (allTilesShown == false):
-		for y in range(0, 2):
-			for x in range(0, 12):
+		for y in range(0, 3):
+			for x in range(0, 18):
 				Playfield[x][y] = (randi() % 10)
 
 		Playfield[randi() % 12][randi() % 2] = 10
@@ -168,15 +168,20 @@ func SetupForNewGame():
 		Playfield[randi() % 12][randi() % 2] = 11
 
 		Playfield[randi() % 12][randi() % 2] = 14
+		Playfield[randi() % 12][randi() % 2] = 14
+
+		Playfield[randi() % 12][randi() % 2] = 15
 
 		var shownPlus = false
 		var shownMinus = false
 		var shownMinusTwo = false
 		var shownMultiply = false
 		var shownDivide = false
+		var shownDecimal = false
+		var shownDecimalTwo = false
 		var shownEqual = false
-		for y in range(0, 8):
-			for x in range(0, 12):
+		for y in range(0, 12):
+			for x in range(0, 18):
 				if (Playfield[x][y] == 10):  shownPlus = true
 				
 				if (Playfield[x][y] == 11):
@@ -187,15 +192,22 @@ func SetupForNewGame():
 				
 				if (Playfield[x][y] == 12):  shownMultiply = true
 				if (Playfield[x][y] == 13):  shownDivide = true
-				if (Playfield[x][y] == 14):  shownEqual = true
 
-		if (shownPlus == true and shownMinus == true and shownMinusTwo == true and shownMultiply == true and shownDivide == true and shownEqual == true):
+				if (Playfield[x][y] == 14):
+					if (shownDecimal == false):
+						shownDecimal = true
+					elif (shownDecimalTwo == false):
+						shownDecimalTwo = true
+
+				if (Playfield[x][y] == 15):  shownEqual = true
+
+		if (shownPlus == true and shownMinus == true and shownMinusTwo == true and shownMultiply == true and shownDivide == true and shownDecimal == true and shownDecimalTwo == true and shownEqual == true):
 			allTilesShown = true
 
 	FallingTileX = 0
-	FallingTileY = 7
-	FallingTileScreenX = 99
-	FallingTileScreenY = (500-37) - (FallingTileY*75)
+	FallingTileY = 11
+	FallingTileScreenX = 99-11
+	FallingTileScreenY = (500-37+10) - (FallingTileY*50)
 	FallingTileYoffset = 0
 
 	FallingTile = (randi() % 10)
@@ -204,7 +216,7 @@ func SetupForNewGame():
 
 	GameOver = false
 
-	for index in range(0, 10):
+	for index in range(0, 20):
 		SelectedTilePlayfieldX[index] = -1
 		SelectedTilePlayfieldY[index] = -1
 
@@ -266,12 +278,12 @@ func SetUpNextFallingTile():
 
 	AudioCore.PlayEffect(3)
 
-	if (FallingTileX < 11):
+	if (FallingTileX < 17):
 		FallingTileX+=1
 	else:
 		FallingTileX = 0
 
-	FallingTileY = 7
+	FallingTileY = 11
 
 	if (Playfield[FallingTileX][FallingTileY-1] > -1):
 		StillPlaying = false
@@ -279,8 +291,8 @@ func SetUpNextFallingTile():
 		AudioCore.PlayEffect(4)
 		return
 
-	FallingTileScreenX = 99 + (FallingTileX*75)
-	FallingTileScreenY = (500-37) - (FallingTileY*75)
+	FallingTileScreenX = 99 - 11 + (FallingTileX*50)
+	FallingTileScreenY = (500-37+11) - (FallingTileY*50)
 	FallingTileYoffset = 0
 
 	FallingTile = (randi() % 10)
@@ -292,9 +304,11 @@ func SetUpNextFallingTile():
 		var shownMinusTwo = false
 		var shownMultiply = false
 		var shownDivide = false
+		var shownDecimal = false
+		var shownDecimalTwo = false
 		var shownEqual = false
-		for y in range(0, 8):
-			for x in range(0, 12):
+		for y in range(0, 12):
+			for x in range(0, 18):
 				if (Playfield[x][y] == 10):  shownPlus = true
 				
 				if (Playfield[x][y] == 11):
@@ -305,10 +319,17 @@ func SetUpNextFallingTile():
 				
 				if (Playfield[x][y] == 12):  shownMultiply = true
 				if (Playfield[x][y] == 13):  shownDivide = true
-				if (Playfield[x][y] == 14):  shownEqual = true
+
+				if (Playfield[x][y] == 14):
+					if (shownDecimal == false):
+						shownDecimal = true
+					elif (shownDecimalTwo == false):
+						shownDecimalTwo = true
+
+				if (Playfield[x][y] == 15):  shownEqual = true
 
 		if (shownEqual == false):
-			FallingTile = 14
+			FallingTile = 15
 			return
 		elif (shownPlus == false):
 			FallingTile = 10
@@ -322,11 +343,17 @@ func SetUpNextFallingTile():
 		elif (shownDivide == false):
 			FallingTile = 13
 			return
+		elif (shownDecimal == false):
+			FallingTile = 14
+			return
 		elif (shownMinusTwo == false):
 			FallingTile = 11
 			return
+		elif (shownDecimalTwo == false):
+			FallingTile = 14
+			return
 
-		if (shownPlus == true and shownMinus == true and shownMinusTwo == true and shownMultiply == true and shownDivide == true and shownEqual == true):
+		if (shownPlus == true and shownMinus == true and shownMinusTwo == true and shownMultiply == true and shownDivide == true and shownDecimalTwo == true and shownDecimalTwo == true and shownEqual == true):
 			allTilesShown = true
 
 	pass
@@ -338,61 +365,20 @@ func ConvertTilesToString():
 	
 	PlusIndex = -1
 	MinusIndex = -1
+	MinusTwoIndex = -1
 	MultiplyIndex = -1
 	DivideIndex = -1
+	DecimalIndex = -1
+	DecimalTwoIndex = -1
 	EqualIndex = -1
 
 	TheEnd = 0
 
 	CurrentClearedTiles = 0
 
-	EquationString = ""
-	var index = 0
-	while (index < 10 and SelectedTilePlayfieldX[index] != -1 and SelectedTilePlayfieldY[index] != -1):
-		var selX = SelectedTilePlayfieldX[index]
-		var selY = SelectedTilePlayfieldY[index]
-		if (Playfield[selX][selY] > -1 and Playfield[selX][selY] < 16):
-			CurrentClearedTiles+=1
-			var part = Playfield[selX][selY]
-			if   (part ==  0):  EquationString+="0"
-			elif (part ==  1):  EquationString+="1"
-			elif (part ==  2):  EquationString+="2"
-			elif (part ==  3):  EquationString+="3"
-			elif (part ==  4):  EquationString+="4"
-			elif (part ==  5):  EquationString+="5"
-			elif (part ==  6):  EquationString+="6"
-			elif (part ==  7):  EquationString+="7"
-			elif (part ==  8):  EquationString+="8"
-			elif (part ==  9):  EquationString+="9"
-			elif (part == 10):
-				EquationString+="+"
-				PlusIndex = index
-				ThereIsAnOperator = true
-			elif (part == 11):
-				EquationString+="-"
-				MinusIndex = index
-				ThereIsAnOperator = true
-			elif (part == 12):
-				EquationString+="*"
-				ThereIsAnOperator = true
-				MultiplyIndex = index
-			elif (part == 13):
-				EquationString+="/"
-				ThereIsAnOperator = true
-				DivideIndex = index
-			elif (part == 14):
-#				EquationString+="="
-				ThereIsAnEqual = true
-				EqualIndex = index
-				index = 13
-
-			index+=1
-
-	EqualIsNegative = false
-
 	ValueToCheck = ""
-	index = 0
-	while (index < 10 and SelectedTilePlayfieldX[index] != -1 and SelectedTilePlayfieldY[index] != -1):
+	var index = 0
+	while (index < 18 and SelectedTilePlayfieldX[index] != -1 and SelectedTilePlayfieldY[index] != -1):
 		var selX = SelectedTilePlayfieldX[index]
 		var selY = SelectedTilePlayfieldY[index]
 		if (Playfield[selX][selY] > -1 and Playfield[selX][selY] < 16):
@@ -414,7 +400,12 @@ func ConvertTilesToString():
 				ThereIsAnOperator = true
 			elif (part == 11):
 				ValueToCheck+="-"
-				MinusIndex = index
+
+				if (MinusIndex == -1):
+					MinusIndex = index
+				elif (MinusTwoIndex == -1):
+					MinusTwoIndex = index
+
 				ThereIsAnOperator = true
 			elif (part == 12):
 				ValueToCheck+="*"
@@ -425,48 +416,68 @@ func ConvertTilesToString():
 				ThereIsAnOperator = true
 				DivideIndex = index
 			elif (part == 14):
+				ValueToCheck+="."
+
+				if (DecimalIndex == -1):
+					DecimalIndex = index
+				elif (DecimalTwoIndex == -1):
+					DecimalTwoIndex = index
+
+#				ThereIsAnOperator = true
+			elif (part == 15):
 				ValueToCheck+="="
 				ThereIsAnEqual = true
 				EqualIndex = index
 
 			index+=1
 
-	if ( (EqualIndex + 1) == MinusIndex ):
-		EqualIsNegative = true
-
 	pass
 
 #----------------------------------------------------------------------------------------
 func CheckEquationNewPerfect():
 	ConvertTilesToString()
-	
+
+#	print("fullEquation = ", ValueToCheck)
+	var splitEquation = ValueToCheck.split("=", true, 0)
+
 	var expression = Expression.new()
-	expression.parse(EquationString)
-	var result = expression.execute()
+	expression.parse(splitEquation[0])
+	var resultLeft = expression.execute()
+#	print("resultLeft = ", resultLeft)
 
-	var equal = ValueToCheck.split("=", true, 0)
+	var expressionTwo = Expression.new()
+	expressionTwo.parse(splitEquation[1])
+	var resultRight = expressionTwo.execute()
+#	print("resultRight = ", resultRight)
 
-	var noEqual = int(equal[1])
+	if (resultLeft == null or resultRight == null):  return(false)
 
-	var my_int: int = int(noEqual)
-
-	if (result == my_int):
+	if (is_equal_approx(resultLeft, resultRight) == true):
 		var numberOfOperators = 0
 		var scoreAdd = 0
 		if (MultiplyIndex > -1):
-			scoreAdd+=(50*Level*SelectedTileIndex)
+			scoreAdd+=(50*Level)
 			numberOfOperators+=1
 		if (DivideIndex > -1):
-			scoreAdd+=(100*Level*SelectedTileIndex)
+			scoreAdd+=(100*Level)
 			numberOfOperators+=1
 		if (PlusIndex > -1):
-			scoreAdd+=(25*Level*SelectedTileIndex)
+			scoreAdd+=(25*Level)
 			numberOfOperators = 0
 		if (MinusIndex > -1):
-			scoreAdd+=(75*Level*SelectedTileIndex)
+			scoreAdd+=(75*Level)
 			numberOfOperators+=1
+		if (MinusTwoIndex > -1):
+			scoreAdd+=(75*2*Level)
+			numberOfOperators+=1
+		if (DecimalIndex > -1):
+			scoreAdd+=(125*Level)
+		if (DecimalTwoIndex > -1):
+			scoreAdd+=(125*2*Level)
+
 		Score+=scoreAdd
-		Score+=(250*numberOfOperators)
+		Score+=(250**Level*numberOfOperators)
+		Score+=(SelectedTileIndex*50*Level)
 		ScoreChanged = true
 
 		TotalClearedTiles+=SelectedTileIndex
@@ -501,6 +512,8 @@ func CheckEquationNewPerfect():
 
 		return(true)
 	else:
+#		var test = float(resultLeft) - float(resultRight)
+#		print("test = ", test)
 		return(false)
 
 #----------------------------------------------------------------------------------------
@@ -516,14 +529,14 @@ func RunGameplayCore():
 			GameState = ApplyingGravity
 
 			for index in range(9):
-				for y in range(7):
-					for x in range(12):
+				for y in range(12):
+					for x in range(18):
 						if (Playfield[x][y] > -1):
 							if (SelectedTilePlayfieldX[index] == x and SelectedTilePlayfieldY[index] == y):
 								Playfield[x][y] = -1
 								index+=1
 
-			for index in range(10):
+			for index in range(20):
 				SelectedTilePlayfieldX[index] = -1
 				SelectedTilePlayfieldY[index] = -1
 
@@ -535,10 +548,10 @@ func RunGameplayCore():
 
 		SelectedTilesAlpha = 1.0
 
-		for y in range(7):
-			for x in range(12):
+		for y in range(11):
+			for x in range(18):
 				if (Playfield[x][y] == -1 and Playfield[x][y+1] > -1):
-					for yTwo in range(y+1, 8):
+					for yTwo in range(y+1, 11):
 						Playfield[x][yTwo-1] = Playfield[x][yTwo]
 					
 					Playfield[x][7] = -1
@@ -554,8 +567,8 @@ func RunGameplayCore():
 			DrawEverything = true
 	elif (GameState == Playing):
 		CurrentHeightOfPlayfield = 0
-		for y in range(7):
-			for x in range(12):
+		for y in range(12):
+			for x in range(18):
 				if (LogicCore.Playfield[x][y] > -1):
 					if (y > CurrentHeightOfPlayfield):
 						CurrentHeightOfPlayfield = y
@@ -569,14 +582,15 @@ func RunGameplayCore():
 		else:
 			FallingTileYoffset+=(7+9)
 
-		if (CurrentHeightOfPlayfield < 2):
+		if (CurrentHeightOfPlayfield < 4):
 			FallingTileYoffset+=35
+			FramesSinceLastPlayerInput = 0
 
 		if (FramesSinceLastPlayerInput > 500):  FallingTileYoffset+=35
 
-		if (FallingTileYoffset > 75):
+		if (FallingTileYoffset > 50):
 			FallingTileYoffset = 0
-			FallingTileScreenY+=75
+			FallingTileScreenY+=50
 			FallingTileY-=1
 
 			if (FallingTileY == 0):
@@ -588,10 +602,10 @@ func RunGameplayCore():
 
 		if (InputCore.MouseButtonLeftPressed == true and TileClicked == false and CutSceneScale == 0.0):
 			ConvertTilesToString()
-			var screenY = 500-37
-			var screenX = 99
-			for y in range(7):
-				for x in range(12):
+			var screenY = 500-37+11
+			var screenX = 99-11
+			for y in range(12):
+				for x in range(18):
 					if (Playfield[x][y] > -1):
 						TileClicked = true
 
@@ -599,10 +613,10 @@ func RunGameplayCore():
 
 						TileSelectedDrawTwiceBandaid = 2
 
-						if (SelectedTileIndex < 10):
+						if (SelectedTileIndex < 16):
 							var mY = InputCore.MouseScreenY
 							var mX = InputCore.MouseScreenX
-							if (mY > (screenY - 37) and mY < (screenY + 37) and mX > (screenX - 37) and mX < (screenX + 37)):
+							if (mY > (screenY - 25) and mY < (screenY + 25) and mX > (screenX - 25) and mX < (screenX + 25)):
 								xPos = x
 								yPos = y
 								var selected = false
@@ -612,7 +626,7 @@ func RunGameplayCore():
 
 								if (selected == false):
 									if (SelectedTileIndex == 0):
-										if ( (Playfield[x][y] > 0 and Playfield[x][y] < 10) or (Playfield[x][y] == 11) ):
+										if ( (Playfield[x][y] > 0 and Playfield[x][y] < 10) or (Playfield[x][y] == 11) or (Playfield[x][y] == 14) ):
 											allowTileSelection = true
 									elif (SelectedTileIndex > 0):
 										var posX = SelectedTilePlayfieldX[SelectedTileIndex-1]
@@ -624,27 +638,27 @@ func RunGameplayCore():
 											if ( Playfield[x][y] == 0 and (Playfield[posX][posY] == 10 or Playfield[posX][posY] == 11 or Playfield[posX][posY] == 12 and Playfield[posX][posY] == 13) ):
 												allowTileSelection = false
 
-											if ( Playfield[x][y] == 0 and (Playfield[posX][posY] == 14) ):
+											if ( Playfield[x][y] == 0 and (Playfield[posX][posY] == 15) ):
 												allowTileSelection = false
 
 											if ( Playfield[x][y] == 0 and (Playfield[posX][posY] == 13) ):
 												allowTileSelection = false
 										elif (Playfield[posX][posY] > -1 and Playfield[posX][posY] < 10):
-											if (ThereIsAnEqual == false):
-												if (Playfield[x][y] == 10):
-													if (PlusIndex == -1):
-														allowTileSelection = true
-												elif (Playfield[x][y] == 11):
-													if (MinusIndex == -1):
-														allowTileSelection = true
-												elif (Playfield[x][y] == 12):
-													if (MultiplyIndex == -1):
-														allowTileSelection = true
-												elif (Playfield[x][y] == 13):
-													if (DivideIndex == -1):
-														allowTileSelection = true
+#											if (ThereIsAnEqual == false):
+											if (Playfield[x][y] == 10):
+												if (PlusIndex == -1):
+													allowTileSelection = true
+											elif (Playfield[x][y] == 11):
+												if (MinusIndex == -1):
+													allowTileSelection = true
+											elif (Playfield[x][y] == 12):
+												if (MultiplyIndex == -1):
+													allowTileSelection = true
+											elif (Playfield[x][y] == 13):
+												if (DivideIndex == -1):
+													allowTileSelection = true
 
-											if (Playfield[x][y] == 14 and SelectedTileIndex > 2 and ThereIsAnOperator == true):
+											if (Playfield[x][y] == 15 and SelectedTileIndex > 2 and ThereIsAnOperator == true):
 												if (ThereIsAnEqual == false):
 													allowTileSelection = true
 
@@ -654,22 +668,28 @@ func RunGameplayCore():
 										if (Playfield[x][y] == 0 and Playfield[posX][posY] == 12):
 											allowTileSelection = false
 
-										if (Playfield[x][y] == 11 and Playfield[posX][posY] == 14):
+										if (Playfield[x][y] == 11 and Playfield[posX][posY] == 15):
 											allowTileSelection = true
 
-										if (ThereIsAnEqual == true and MinusIndex > -1 and Playfield[posX][posY] == 14 and Playfield[x][y] == 0):
+										if (ThereIsAnEqual == true and MinusIndex > -1 and Playfield[posX][posY] == 15 and Playfield[x][y] == 0):
 											allowTileSelection = true
 
 										if (SelectedTileIndex > 1):
 											var checkX = SelectedTilePlayfieldX[SelectedTileIndex-2]
 											var checkY = SelectedTilePlayfieldY[SelectedTileIndex-2]
-											if (ThereIsAnEqual == true and MinusIndex > -1 and Playfield[checkX][checkY] == 14 and Playfield[posX][posY] == 0 and Playfield[x][y] > -1 and Playfield[x][y] < 10):
+											if (ThereIsAnEqual == true and MinusIndex > -1 and Playfield[checkX][checkY] == 15 and Playfield[posX][posY] == 0 and Playfield[x][y] > -1 and Playfield[x][y] < 10):
 												allowTileSelection = false
 
-					screenX+=75
+										if ( Playfield[x][y] == 14 and ((Playfield[posX][posY] > -1 and Playfield[posX][posY] < 10)) ):
+											allowTileSelection = true
 
-				screenX = 99
-				screenY-=75
+										if ( Playfield[x][y] == 14 and (Playfield[posX][posY] > 9 and Playfield[posX][posY] < 14) or Playfield[posX][posY] == 15 ):
+											allowTileSelection = true
+
+					screenX+=50
+
+				screenX = 99-11
+				screenY-=50
 
 		if (allowTileSelection == true):
 			SelectedTilePlayfieldX[SelectedTileIndex] = xPos
@@ -706,11 +726,11 @@ func _ready():
 	LevelAdvance[AdultNeverMode] = (15 * 2)
 	LevelAdvance[TurboNeverMode] = (15 * 4)
 
-	Playfield.resize(12)
-	for x in range(12):
+	Playfield.resize(18)
+	for x in range(18):
 		Playfield[x] = []
-		Playfield[x].resize(8)
-		for y in range(8):
+		Playfield[x].resize(12)
+		for y in range(12):
 			Playfield[x][y] = []
 
 	TileSpriteIndex.resize(16)
@@ -718,8 +738,8 @@ func _ready():
 	Score = 0
 	Level = 0
 
-	SelectedTilePlayfieldX.resize(11)
-	SelectedTilePlayfieldY.resize(11)
+	SelectedTilePlayfieldX.resize(20)
+	SelectedTilePlayfieldY.resize(20)
 
 	SelectedTileIndex = 0
 
@@ -743,10 +763,11 @@ func _ready():
 	MinusIndex = -1
 	MultiplyIndex = -1
 	DivideIndex = -1
+	DecimalIndex = -1
 	EqualIndex = -1
 
-	number.resize(10)
-	mathOperator.resize(10)
+	number.resize(16)
+	mathOperator.resize(16)
 
 	TileSelectedDrawTwiceBandaid = 0
 

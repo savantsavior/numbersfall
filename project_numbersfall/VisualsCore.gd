@@ -129,7 +129,7 @@ func _ready():
 	StarColorG.resize(250)
 	StarColorB.resize(250)
 
-	for _index in range(0, 20001):
+	for _index in range(0, 40000):
 		Sprites.ci_rid.append(-1)
 		Sprites.ci_rid[_index] = RenderingServer.canvas_item_create()
 		RenderingServer.canvas_item_set_parent(Sprites.ci_rid[_index], get_canvas_item())
@@ -234,75 +234,79 @@ func _ready():
 		Sprites.SpriteImage[200+index] = load("res://media/images/gui/NameInputButton2.png")
 		Sprites.SpriteActive[200+index] = true
 
-	for index in range(0, 99):
-		Sprites.SpriteImage[300+index] = load("res://media/images/playing/Tile0.png")
-		Sprites.SpriteActive[300+index] = true
+	for index in range(0, 999):
+		Sprites.SpriteImage[20000+index] = load("res://media/images/playing/Tile0-S.png")
+		Sprites.SpriteActive[20000+index] = true
 
-	for index in range(0, 99):
-		Sprites.SpriteImage[400+index] = load("res://media/images/playing/Tile1.png")
-		Sprites.SpriteActive[400+index] = true
+	for index in range(0, 999):
+		Sprites.SpriteImage[21000+index] = load("res://media/images/playing/Tile1-S.png")
+		Sprites.SpriteActive[21000+index] = true
 
-	for index in range(0, 99):
-		Sprites.SpriteImage[500+index] = load("res://media/images/playing/Tile2.png")
-		Sprites.SpriteActive[500+index] = true
+	for index in range(0, 999):
+		Sprites.SpriteImage[22000+index] = load("res://media/images/playing/Tile2-S.png")
+		Sprites.SpriteActive[22000+index] = true
 
-	for index in range(0, 99):
-		Sprites.SpriteImage[600+index] = load("res://media/images/playing/Tile3.png")
-		Sprites.SpriteActive[600+index] = true
+	for index in range(0, 999):
+		Sprites.SpriteImage[23000+index] = load("res://media/images/playing/Tile3-S.png")
+		Sprites.SpriteActive[23000+index] = true
 
-	for index in range(0, 99):
-		Sprites.SpriteImage[700+index] = load("res://media/images/playing/Tile4.png")
-		Sprites.SpriteActive[700+index] = true
+	for index in range(0, 999):
+		Sprites.SpriteImage[24000+index] = load("res://media/images/playing/Tile4-S.png")
+		Sprites.SpriteActive[24000+index] = true
 
-	for index in range(0, 99):
-		Sprites.SpriteImage[800+index] = load("res://media/images/playing/Tile5.png")
-		Sprites.SpriteActive[800+index] = true
+	for index in range(0, 999):
+		Sprites.SpriteImage[25000+index] = load("res://media/images/playing/Tile5-S.png")
+		Sprites.SpriteActive[25000+index] = true
 
-	for index in range(0, 99):
-		Sprites.SpriteImage[900+index] = load("res://media/images/playing/Tile6.png")
-		Sprites.SpriteActive[900+index] = true
+	for index in range(0, 999):
+		Sprites.SpriteImage[26000+index] = load("res://media/images/playing/Tile6-S.png")
+		Sprites.SpriteActive[26000+index] = true
 
-	for index in range(0, 99):
-		Sprites.SpriteImage[1000+index] = load("res://media/images/playing/Tile7.png")
-		Sprites.SpriteActive[1000+index] = true
+	for index in range(0, 999):
+		Sprites.SpriteImage[27000+index] = load("res://media/images/playing/Tile7-S.png")
+		Sprites.SpriteActive[27000+index] = true
 
-	for index in range(0, 99):
-		Sprites.SpriteImage[1100+index] = load("res://media/images/playing/Tile8.png")
-		Sprites.SpriteActive[1100+index] = true
+	for index in range(0, 999):
+		Sprites.SpriteImage[28000+index] = load("res://media/images/playing/Tile8-S.png")
+		Sprites.SpriteActive[28000+index] = true
 
-	for index in range(0, 99):
-		Sprites.SpriteImage[1200+index] = load("res://media/images/playing/Tile9.png")
-		Sprites.SpriteActive[1200+index] = true
+	for index in range(0, 999):
+		Sprites.SpriteImage[29000+index] = load("res://media/images/playing/Tile9-S.png")
+		Sprites.SpriteActive[29000+index] = true
 
-	for index in range(0, 99):
-		Sprites.SpriteImage[1300+index] = load("res://media/images/playing/TilePlus.png")
-		Sprites.SpriteActive[1300+index] = true
+	for index in range(0, 999):
+		Sprites.SpriteImage[30000+index] = load("res://media/images/playing/TilePlus-S.png")
+		Sprites.SpriteActive[30000+index] = true
 
-	for index in range(0, 99):
-		Sprites.SpriteImage[1400+index] = load("res://media/images/playing/TileMinus.png")
-		Sprites.SpriteActive[1400+index] = true
+	for index in range(0, 999):
+		Sprites.SpriteImage[31000+index] = load("res://media/images/playing/TileMinus-S.png")
+		Sprites.SpriteActive[31000+index] = true
 
-	for index in range(0, 99):
-		Sprites.SpriteImage[1500+index] = load("res://media/images/playing/TileMuliply.png")
-		Sprites.SpriteActive[1500+index] = true
+	for index in range(0, 999):
+		Sprites.SpriteImage[32000+index] = load("res://media/images/playing/TileMuliply-S.png")
+		Sprites.SpriteActive[32000+index] = true
 
-	for index in range(0, 99):
-		Sprites.SpriteImage[1600+index] = load("res://media/images/playing/TileDivide.png")
-		Sprites.SpriteActive[1600+index] = true
+	for index in range(0, 999):
+		Sprites.SpriteImage[33000+index] = load("res://media/images/playing/TileDivide-S.png")
+		Sprites.SpriteActive[33000+index] = true
 
-	for index in range(0, 99):
-		Sprites.SpriteImage[1700+index] = load("res://media/images/playing/TileEqual.png")
-		Sprites.SpriteActive[1700+index] = true
+	for index in range(0, 999):
+		Sprites.SpriteImage[34000+index] = load("res://media/images/playing/TileDecimal-S.png")
+		Sprites.SpriteActive[34000+index] = true
 
-	for index in range(0, 99):
-		Sprites.SpriteImage[1800+index] = load("res://media/images/playing/Selected.png")
-		Sprites.SpriteActive[1800+index] = true
+	for index in range(0, 999):
+		Sprites.SpriteImage[35000+index] = load("res://media/images/playing/TileEqual-S.png")
+		Sprites.SpriteActive[35000+index] = true
 
-	Sprites.SpriteImage[1900] = load("res://media/images/playing/UndoButton.png")
-	Sprites.SpriteActive[1900] = true
+	for index in range(0, 999):
+		Sprites.SpriteImage[36000+index] = load("res://media/images/playing/Selected-S.png")
+		Sprites.SpriteActive[36000+index] = true
 
-	Sprites.SpriteImage[1901] = load("res://media/images/playing/CheckButton.png")
-	Sprites.SpriteActive[1901] = true
+	Sprites.SpriteImage[2001] = load("res://media/images/playing/UndoButton-S.png")
+	Sprites.SpriteActive[2001] = true
+
+	Sprites.SpriteImage[2002] = load("res://media/images/playing/CheckButton-S.png")
+	Sprites.SpriteActive[2002] = true
 
 	Sprites.SpriteImage[2000] = load("res://media/images/playing/Playfield.png")
 	Sprites.SpriteActive[2000] = true
@@ -351,7 +355,7 @@ func _ready():
 	Sprites.SpriteActive[19999] = true
 
 	var sprite_size
-	for index in range(0, 20001):
+	for index in range(0, 40000):
 		if Sprites.SpriteActive[index] == true:
 			sprite_size = Sprites.SpriteImage[index].get_size()
 			Sprites.SpriteImageWidth[index] = sprite_size.x
@@ -384,8 +388,10 @@ func _ready():
 				RenderingServer.canvas_item_set_draw_index(Sprites.ci_rid[index], -5)
 			elif (index > 9999 and index < 19980):
 				RenderingServer.canvas_item_set_draw_index(Sprites.ci_rid[index], -2)
-			elif (index > 1800 and index < 1900):
-				RenderingServer.canvas_item_set_draw_index(Sprites.ci_rid[index], 5)
+			elif (index > 19999 and index < 36000):
+				RenderingServer.canvas_item_set_draw_index(Sprites.ci_rid[index], 0)
+			elif (index > 35999 and index < 37000):
+				RenderingServer.canvas_item_set_draw_index(Sprites.ci_rid[index], 1)
 			elif (index == 131):
 				RenderingServer.canvas_item_set_draw_index(Sprites.ci_rid[index], -99999)
 			elif (index == 132):
@@ -399,7 +405,7 @@ func _ready():
 			elif (index == 3000):
 				RenderingServer.canvas_item_set_draw_index(Sprites.ci_rid[index], 999998)
 			elif (index > 3000 and index < 3010):
-				RenderingServer.canvas_item_set_draw_index(Sprites.ci_rid[index], 2)
+				RenderingServer.canvas_item_set_draw_index(Sprites.ci_rid[index], 3)
 			elif (index == 3010):
 				RenderingServer.canvas_item_set_draw_index(Sprites.ci_rid[index], 5)
 			elif (index == 5000):
@@ -805,6 +811,19 @@ func LoadAboutScreenTexts():
 	AddAboutScreenText("''CuffLimbs''", 1.0)
 	AddAboutScreenText("''zleap''", 1.0)
 	AddAboutScreenText("''tibaverus''", 1.0)
+	AddAboutScreenText("''secretagent''", 1.0)
+	AddAboutScreenText("''DeanOrTori''", 1.0)
+	AddAboutScreenText("''Ejsstiil''", 1.0)
+	AddAboutScreenText("''gertkeno''", 1.0)
+	AddAboutScreenText("''dragonforge-dev''", 1.0)
+	AddAboutScreenText("''wchc''", 1.0)
+	AddAboutScreenText("''kraasch''", 1.0)
+	AddAboutScreenText("''normalized''", 1.0)
+	AddAboutScreenText("''justin_Creative''", 1.0)
+	AddAboutScreenText("''ChezBergur''", 1.0)
+	AddAboutScreenText("''paintsimmon''", 1.0)
+	AddAboutScreenText("''hyvernox''", 1.0)
+	AddAboutScreenText("''TokyoFunkScene''", 1.0)
 
 	AddAboutScreenText(" ", 1.0)
 	AddAboutScreenText("''You!''", 1.0)

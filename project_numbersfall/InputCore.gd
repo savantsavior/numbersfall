@@ -379,6 +379,7 @@ func _input(event):
 				ScreensCore.ScreenFadeStatus = ScreensCore.FadingToBlack
 				LogicCore.StillPlaying = false
 				LogicCore.GameQuit = true
+				LogicCore.GameOver = true
 				InputCore.MouseButtonLeftPressed = false
 				InputCore.DelayAllUserInput = 35
 				AudioCore.PlayMusic(0, true)
