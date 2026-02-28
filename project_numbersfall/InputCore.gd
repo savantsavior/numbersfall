@@ -409,7 +409,6 @@ func _input(event):
 					InputThatStartedNewGame = InputKeyboard
 				elif (event.is_released() == true):
 					MouseButtonLeftPressed = false
-					LogicCore.TileClicked = false
 
 		if event is InputEventMouseButton:
 			if event.button_index == MOUSE_BUTTON_RIGHT:

@@ -632,7 +632,11 @@ func LoadAboutScreenTexts():
 	AddAboutScreenText(LogicCore.Version, 1.0)
 
 	AddAboutScreenText("Copyright 2026 By:", 1.0)
-	AddAboutScreenText("TeamJeZxLee.itch.io", 1.0)
+
+	if (LogicCore.HideCopyright == false):
+		AddAboutScreenText("TeamJeZxLee.itch.io", 1.0)
+	elif (LogicCore.HideCopyright == true):
+		AddAboutScreenText("SavantSavior.Itch.io", 1.0)
 
 	AddAboutScreenText("Original Concept By:", 0.0)
 	AddAboutScreenText("JeZxLee", 1.0)
@@ -824,11 +828,16 @@ func LoadAboutScreenTexts():
 	AddAboutScreenText("''paintsimmon''", 1.0)
 	AddAboutScreenText("''hyvernox''", 1.0)
 	AddAboutScreenText("''TokyoFunkScene''", 1.0)
+	AddAboutScreenText("''trizZzle''", 1.0)
 
 	AddAboutScreenText(" ", 1.0)
 	AddAboutScreenText("''You!''", 1.0)
 
-	AddAboutScreenText("A 110% By TeamJeZxLee.Itch.io !", 0.0)
+	if (LogicCore.HideCopyright == false):
+		AddAboutScreenText("A 110% By TeamJeZxLee.Itch.io !", 0.0)
+	elif (LogicCore.HideCopyright == true):
+		AddAboutScreenText("A 110% By SavantSavior.Itch.io !", 0.0)
+
 	AddAboutScreenText(" ", 1.0)
 
 	DrawText(AboutTextsStartIndex, AboutTexts.AboutTextsText[AboutTextsStartIndex], ((ScreenWidth/2.0)+100.0), ScreenHeight+25, 1, 1, 30, 1.0, 1.0, 0, 1.0, 1.0, AboutTexts.AboutTextsBlue[AboutTextsStartIndex-10], 0.0, 0.0, 0.0, 0.0)

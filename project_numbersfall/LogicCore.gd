@@ -18,7 +18,9 @@
 # "LogicCore.gd"
 extends Node2D
 
-var Version = "Retail 1.1.0 Release Candidate 3"
+var HideCopyright = false
+
+var Version = "Retail 1.1.0"
 
 const ChildStoryMode				= 0
 const TeenStoryMode					= 2
@@ -114,8 +116,6 @@ var mathOperator = []
 
 var GameQuit
 
-var TileSelectedDrawTwiceBandaid
-
 var CurrentHeightOfPlayfield
 
 var CutSceneAlpha
@@ -124,8 +124,6 @@ var CutSceneTimer
 var CutSceneBlackBackgroundAlpha
 
 var UndoAction = 1
-
-var TileClicked = false
 
 var EnableRightClick = 1
 
@@ -239,11 +237,7 @@ func SetupForNewGame():
 
 	CurrentClearedTiles = 0
 
-	TileSelectedDrawTwiceBandaid = 0
-
 	CurrentHeightOfPlayfield = 0
-
-	TileClicked = false
 
 	if (GameMode < 4):
 		CutSceneAlpha = 0.0
@@ -423,7 +417,6 @@ func ConvertTilesToString():
 				elif (DecimalTwoIndex == -1):
 					DecimalTwoIndex = index
 
-#				ThereIsAnOperator = true
 			elif (part == 15):
 				ValueToCheck+="="
 				ThereIsAnEqual = true
@@ -437,18 +430,15 @@ func ConvertTilesToString():
 func CheckEquationNewPerfect():
 	ConvertTilesToString()
 
-#	print("fullEquation = ", ValueToCheck)
 	var splitEquation = ValueToCheck.split("=", true, 0)
 
 	var expression = Expression.new()
 	expression.parse(splitEquation[0])
 	var resultLeft = expression.execute()
-#	print("resultLeft = ", resultLeft)
 
 	var expressionTwo = Expression.new()
 	expressionTwo.parse(splitEquation[1])
 	var resultRight = expressionTwo.execute()
-#	print("resultRight = ", resultRight)
 
 	if (resultLeft == null or resultRight == null):  return(false)
 
@@ -512,8 +502,6 @@ func CheckEquationNewPerfect():
 
 		return(true)
 	else:
-#		var test = float(resultLeft) - float(resultRight)
-#		print("test = ", test)
 		return(false)
 
 #----------------------------------------------------------------------------------------
@@ -600,27 +588,23 @@ func RunGameplayCore():
 				Playfield[FallingTileX][FallingTileY] = FallingTile
 				SetUpNextFallingTile()
 
-		if (InputCore.MouseButtonLeftPressed == true and TileClicked == false and CutSceneScale == 0.0):
+		if (InputCore.MouseButtonLeftPressed == true and CutSceneScale == 0.0):
 			ConvertTilesToString()
 			var screenY = 500-37+11
 			var screenX = 99-11
 			for y in range(12):
 				for x in range(18):
 					if (Playfield[x][y] > -1):
-						TileClicked = true
-
 						DrawEverything = true
-
-						TileSelectedDrawTwiceBandaid = 2
 
 						if (SelectedTileIndex < 16):
 							var mY = InputCore.MouseScreenY
 							var mX = InputCore.MouseScreenX
-							if (mY > (screenY - 25) and mY < (screenY + 25) and mX > (screenX - 25) and mX < (screenX + 25)):
+							if ( mY > (screenY - 25) and mY < (screenY + 25) and mX > (screenX - 25) and mX < (screenX + 25) ):
 								xPos = x
 								yPos = y
 								var selected = false
-								for index in range(0, 10):
+								for index in range(0, 18):
 									if (SelectedTilePlayfieldX[index] == x and SelectedTilePlayfieldY[index] == y):
 										selected = true
 
@@ -644,7 +628,6 @@ func RunGameplayCore():
 											if ( Playfield[x][y] == 0 and (Playfield[posX][posY] == 13) ):
 												allowTileSelection = false
 										elif (Playfield[posX][posY] > -1 and Playfield[posX][posY] < 10):
-#											if (ThereIsAnEqual == false):
 											if (Playfield[x][y] == 10):
 												if (PlusIndex == -1):
 													allowTileSelection = true
@@ -699,8 +682,6 @@ func RunGameplayCore():
 			AudioCore.PlayEffect(0)
 			FramesSinceLastPlayerInput = 0
 
-		if (TileSelectedDrawTwiceBandaid > 0):
-			TileSelectedDrawTwiceBandaid-=1
 			DrawEverything = true
 
 		FramesSinceLastPlayerInput+=1
@@ -768,8 +749,6 @@ func _ready():
 
 	number.resize(16)
 	mathOperator.resize(16)
-
-	TileSelectedDrawTwiceBandaid = 0
 
 	pass
 

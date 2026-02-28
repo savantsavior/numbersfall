@@ -375,7 +375,11 @@ func DisplayTitleScreen():
 		buttonY+=buttonOffsetY
 
 		VisualsCore.DrawSprite(32, VisualsCore.ScreenWidth/2.0, 602-15+18, 2.85, 2.0, 0, 1.0, 1.0, 0.0, 1.0)
-		VisualsCore.DrawText(VisualsCore.TextCurrentIndex, "(C)2026 By TeamJeZxLee.Itch.io", 0, 640-19-4-15+10, 1, 0, 35, 1.0, 1.0, 0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0)
+
+		if (LogicCore.HideCopyright == false):
+			VisualsCore.DrawText(VisualsCore.TextCurrentIndex, "(C)2026 By TeamJeZxLee.Itch.io", 0, 640-19-4-15+10, 1, 0, 35, 1.0, 1.0, 0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0)
+		elif (LogicCore.HideCopyright == true):
+			VisualsCore.DrawText(VisualsCore.TextCurrentIndex, "(C)2026 By SavantSavior.Itch.io", 0, 640-19-4-15+10, 1, 0, 35, 1.0, 1.0, 0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0)
 
 		VisualsCore.DrawText(VisualsCore.TextCurrentIndex, LogicCore.Version, 10, VisualsCore.ScreenHeight-15, 0, 1, 15, 1.0, 1.0, 0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0)
 
@@ -425,18 +429,8 @@ func DisplayTitleScreen():
 		ScreenFadeStatus = FadingToBlack
 	#
 		if AudioCore.MusicVolume == 0.0:
-			AudioCore.MusicVolume = 1.0
+			AudioCore.MusicVolume = 0.5
 			AudioCore.EffectsVolume = 0.5
-			AudioCore.SetMusicAndEffectsVolume(AudioCore.MusicVolume, AudioCore.EffectsVolume)
-			AudioCore.PlayMusic(0, true)
-
-	if InterfaceCore.ThisIconWasPressed(1, -1) == true:
-		ScreenToDisplayNext = MusicTestScreen
-		ScreenFadeStatus = FadingToBlack
-
-		if AudioCore.MusicVolume == 0.0:
-			AudioCore.MusicVolume = 1.0
-			AudioCore.EffectsVolume = 1.0
 			AudioCore.SetMusicAndEffectsVolume(AudioCore.MusicVolume, AudioCore.EffectsVolume)
 			AudioCore.PlayMusic(0, true)
 
@@ -465,18 +459,6 @@ func DisplayTitleScreen():
 		DataCore.SaveOptionsAndHighScores()
 		if OperatingSys == OSDesktop || OperatingSys == OSAndroid:
 			get_tree().quit()
-
-	if (SeeEndingStaff == true):
-		InputCore.DelayAllUserInput = 100
-		SeeEndingStaff = false
-		LogicCore.GameWon = true
-		LogicCore.Score[0] = 0
-		LogicCore.Score[1] = 1000000
-		LogicCore.Score[2] = 0
-		LogicCore.Level = 10
-		DataCore.CheckForNewHighScore()
-		ScreenFadeStatus = FadingToBlack
-		ScreenToDisplayNext = WonGameScreen
 
 	if ScreenFadeStatus == FadingToBlack && ScreenFadeTransparency == 0.5:
 		InputCore.DelayAllUserInput = 15
@@ -1678,8 +1660,6 @@ func DisplayPlayingGameScreen():
 		for index in range(20):
 			for indexTwo in range(999):
 				RenderingServer.canvas_item_set_transform(VisualsCore.Sprites.ci_rid[(20000+indexTwo) + (1000*index)], Transform2D(0.0, Vector2(1.0, 1.0), 0.0, Vector2(-99999, -99999)))
-
-#		VisualsCore.DrawSprite(20000 + (1000*LogicCore.FallingTile), LogicCore.FallingTileScreenX, LogicCore.FallingTileScreenY+LogicCore.FallingTileYoffset, 1.0, 1.0, 0, 1.0, 1.0, 1.0, 1.0)
 
 		if (LogicCore.StillPlaying == false):
 			if (LogicCore.GameQuit == true):

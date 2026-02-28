@@ -25,7 +25,7 @@ var HighScoreScore = []
 var PlayerWithHighestScore
 var NewHighScoreRank
 
-const FILE_NAME = "user://NumbersFall-1_1_0-Retail1-RC3a-game-data.json"
+const FILE_NAME = "user://NumbersFall-1_1_0-Retail1-RC4b-game-data.json"
 var godot_Temp_Version = Engine.get_version_info()
 var GODOT_VERSION = godot_Temp_Version.string
 
