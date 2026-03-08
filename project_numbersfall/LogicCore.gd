@@ -545,8 +545,8 @@ func RunGameplayCore():
 					Playfield[x][7] = -1
 
 		PiecesCanStillFall = false
-		for y in range(7):
-			for x in range(12):
+		for y in range(11):
+			for x in range(18):
 				if (Playfield[x][y] == -1 and Playfield[x][y+1] > -1):
 					PiecesCanStillFall = true
 
