@@ -480,16 +480,16 @@ func CheckEquationNewPerfect():
 			LevelAdvance[GameMode]+=10
 			Level+=1
 
-			if (Level == 4):  AudioCore.PlayMusic(2, true)
-			elif (Level == 6):  AudioCore.PlayMusic(3, true)
-			elif (Level == 8):  AudioCore.PlayMusic(4, true)
-			elif (Level == 9):  AudioCore.PlayMusic(5, true)
-
 			if (GameMode < 4):
 				CutSceneAlpha = 0.0
 				CutSceneScale = 2.0
 				CutSceneTimer = 0
-				
+
+				if (Level == 4):  AudioCore.PlayMusic(2, true)
+				elif (Level == 6):  AudioCore.PlayMusic(3, true)
+				elif (Level == 8):  AudioCore.PlayMusic(4, true)
+				elif (Level == 9):  AudioCore.PlayMusic(5, true)
+
 				if (Level == 10):
 					StillPlaying = false
 					GameWon = true
@@ -506,6 +506,14 @@ func CheckEquationNewPerfect():
 
 #----------------------------------------------------------------------------------------
 func RunGameplayCore():
+	if (GameMode > 3):
+		if (AudioCore.MusicPlayer.playing == false):
+			var index = randi_range(1, 6)
+			while (index == AudioCore.MusicCurrentlyPlaying):
+				index = randi_range(1, 6)
+
+			AudioCore.PlayMusic(index, false)
+
 	if (GameState == FadingTiles):
 		DrawEverything = true
 

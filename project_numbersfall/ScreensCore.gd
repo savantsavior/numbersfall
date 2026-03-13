@@ -438,7 +438,7 @@ func DisplayTitleScreen():
 		LogicCore.SetupForNewGame()
 		ScreenToDisplayNext = PlayingGameScreen
 		if (LogicCore.GameMode < 4):  AudioCore.PlayMusic(1, true)
-		else:  AudioCore.PlayMusic(6, true)
+		else:  AudioCore.PlayMusic(6, false)
 		InputCore.MouseButtonLeftPressed = false
 		ScreenFadeStatus = FadingToBlack
 	elif InterfaceCore.ThisButtonWasPressed(1) == true:
