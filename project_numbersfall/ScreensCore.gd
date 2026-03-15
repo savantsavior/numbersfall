@@ -1507,9 +1507,10 @@ func DisplayPlayingGameScreen():
 		LogicCore.TileSpriteIndex[index] = 1
 
 	if (LogicCore.DrawEverything == true):
-		for index in range(20):
-			for indexTwo in range(999):
-				RenderingServer.canvas_item_set_transform(VisualsCore.Sprites.ci_rid[(20000+indexTwo) + (1000*index)], Transform2D(0.0, Vector2(1.0, 1.0), 0.0, Vector2(-99999, -99999)))
+		for index in range(20000, 36999):
+			if VisualsCore.Sprites.SpriteActive[index] == true:
+				var sprite_size = VisualsCore.Sprites.SpriteImage[index].get_size()
+				RenderingServer.canvas_item_set_transform(VisualsCore.Sprites.ci_rid[index], Transform2D().translated(Vector2(-99999 - sprite_size.x / 2.0, -99999 - sprite_size.y / 2.0)))
 
 		var selectedIndex = 0
 		var screenY = 500-37+11
@@ -1656,10 +1657,6 @@ func DisplayPlayingGameScreen():
 	if ScreenFadeStatus == FadingToBlack && ScreenFadeTransparency == 0.5:
 		VisualsCore.SetFramesPerSecond(30)
 		InputCore.MouseButtonLeftPressed = false
-
-		for index in range(20):
-			for indexTwo in range(999):
-				RenderingServer.canvas_item_set_transform(VisualsCore.Sprites.ci_rid[(20000+indexTwo) + (1000*index)], Transform2D(0.0, Vector2(1.0, 1.0), 0.0, Vector2(-99999, -99999)))
 
 		if (LogicCore.StillPlaying == false):
 			if (LogicCore.GameQuit == true):

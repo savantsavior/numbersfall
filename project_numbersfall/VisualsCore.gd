@@ -489,7 +489,7 @@ func SetScreenStretchMode():
 #                                   Godot Version 3.5 To 4.0 Conversion By: "flairetic"
 #----------------------------------------------------------------------------------------
 func MoveAllActiveSpritesOffScreen():
-	for index in range(1, 20001):
+	for index in range(1, 40000):
 		if Sprites.SpriteActive[index] == true:
 			var sprite_size = Sprites.SpriteImage[index].get_size()
 			RenderingServer.canvas_item_set_transform(Sprites.ci_rid[index], Transform2D().translated(Vector2(-99999 - sprite_size.x / 2.0, -99999 - sprite_size.y / 2.0)))
@@ -684,6 +684,7 @@ func LoadAboutScreenTexts():
 	AddAboutScreenText("P.E.M.D.A.S. Tiles To Equations Conversion By:", 0.0)
 	AddAboutScreenText("''wchc''", 1.0)
 	AddAboutScreenText("''kraasch''", 1.0)
+	AddAboutScreenText("''normalized''", 1.0)
 	AddAboutScreenText("JeZxLee", 1.0)
 
 	AddAboutScreenText("Support Game Programmers:", 0.0)
@@ -829,6 +830,7 @@ func LoadAboutScreenTexts():
 	AddAboutScreenText("''hyvernox''", 1.0)
 	AddAboutScreenText("''TokyoFunkScene''", 1.0)
 	AddAboutScreenText("''trizZzle''", 1.0)
+	AddAboutScreenText("''Toxe''", 1.0)
 
 	AddAboutScreenText(" ", 1.0)
 	AddAboutScreenText("''You!''", 1.0)

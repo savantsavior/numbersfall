@@ -430,44 +430,50 @@ func ConvertTilesToString():
 func CheckEquationNewPerfect():
 	ConvertTilesToString()
 
-	var splitEquation = ValueToCheck.split("=", true, 0)
+	var numberOfOperators = 0
 
-	var expression = Expression.new()
-	expression.parse(splitEquation[0])
-	var resultLeft = expression.execute()
-
-	var expressionTwo = Expression.new()
-	expressionTwo.parse(splitEquation[1])
-	var resultRight = expressionTwo.execute()
+	var text = ValueToCheck
+	var re: RegEx = RegEx.create_from_string("[\\d\\.]+")
+	var text_floatized = re.sub(text, "float($0)", true)
+	var ex: Expression = Expression.new()
+	var exTwo: Expression = Expression.new()
+	var resultLeft = null
+	var resultRight = null
+	var token = text_floatized.split("=")
+	ex.parse(token[0])
+	exTwo.parse(token[1])
+	resultLeft = ex.execute()
+	resultRight = exTwo.execute()
 
 	if (resultLeft == null or resultRight == null):  return(false)
 
 	if (is_equal_approx(resultLeft, resultRight) == true):
-		var numberOfOperators = 0
 		var scoreAdd = 0
 		if (MultiplyIndex > -1):
-			scoreAdd+=(50*Level)
+			scoreAdd+=(5)
 			numberOfOperators+=1
 		if (DivideIndex > -1):
-			scoreAdd+=(100*Level)
+			scoreAdd+=(10)
 			numberOfOperators+=1
 		if (PlusIndex > -1):
-			scoreAdd+=(25*Level)
-			numberOfOperators = 0
+			scoreAdd+=(5)
+			numberOfOperators+=1
 		if (MinusIndex > -1):
-			scoreAdd+=(75*Level)
+			scoreAdd+=(10)
 			numberOfOperators+=1
 		if (MinusTwoIndex > -1):
-			scoreAdd+=(75*2*Level)
+			scoreAdd+=(10*2)
 			numberOfOperators+=1
 		if (DecimalIndex > -1):
-			scoreAdd+=(125*Level)
+			scoreAdd+=(15)
 		if (DecimalTwoIndex > -1):
-			scoreAdd+=(125*2*Level)
+			scoreAdd+=(15*2)
 
-		Score+=scoreAdd
-		Score+=(250**Level*numberOfOperators)
-		Score+=(SelectedTileIndex*50*Level)
+		if (Level < 10):
+			Score+=( scoreAdd * Level * SelectedTileIndex * numberOfOperators )
+		else:
+			Score+=( scoreAdd * 10 * SelectedTileIndex * numberOfOperators )
+
 		ScoreChanged = true
 
 		TotalClearedTiles+=SelectedTileIndex
