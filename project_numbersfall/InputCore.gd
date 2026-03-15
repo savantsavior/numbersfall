@@ -67,7 +67,7 @@ var OldMusicVolume
 
 const InputNone			= -1
 const InputKeyboard		= 0
-const InputMouse			= 1
+const InputMouse		= 1
 const InputTouchOne		= 2
 const InputTouchTwo		= 3
 const InputJoyOne		= 4

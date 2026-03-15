@@ -1597,7 +1597,7 @@ func DisplayPlayingGameScreen():
 									LogicCore.SelectedTileIndex-=1
 									LogicCore.SelectedTilePlayfieldX[LogicCore.SelectedTileIndex] = -1
 									LogicCore.SelectedTilePlayfieldY[LogicCore.SelectedTileIndex] = -1
-			elif ( InterfaceCore.ThisIconWasPressed(2, -1) == true and LogicCore.ThereIsAnOperator == true and LogicCore.ThereIsAnEqual == true and LogicCore.SelectedTileIndex > 4):
+			elif ( InterfaceCore.ThisIconWasPressed(2, -1) == true and LogicCore.ThereIsAnOperator == true and LogicCore.ThereIsAnEqual == true and LogicCore.SelectedTileIndex > 4 and LogicCore.GameState == LogicCore.Playing):
 				if (LogicCore.GameState == LogicCore.Playing):
 					if (LogicCore.BadEquationRedTimer == 0):
 						if ( LogicCore.CheckEquationNewPerfect() == false ):
@@ -1900,6 +1900,7 @@ func DisplayCutSceneScreen():
 	if (InputCore.MouseButtonLeftPressed == true):
 		ScreenToDisplayNext = PlayingGameScreen
 		ScreenFadeStatus = FadingToBlack
+		InputCore.DelayAllUserInput = 35
 
 	pass
 

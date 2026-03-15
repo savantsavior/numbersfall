@@ -602,7 +602,7 @@ func RunGameplayCore():
 				Playfield[FallingTileX][FallingTileY] = FallingTile
 				SetUpNextFallingTile()
 
-		if (InputCore.MouseButtonLeftPressed == true and CutSceneScale == 0.0):
+		if (InputCore.MouseButtonLeftPressed == true and InputCore.DelayAllUserInput == -1 and CutSceneScale == 0.0):
 			ConvertTilesToString()
 			var screenY = 500-37+11
 			var screenX = 99-11
@@ -623,65 +623,7 @@ func RunGameplayCore():
 										selected = true
 
 								if (selected == false):
-									if (SelectedTileIndex == 0):
-										if ( (Playfield[x][y] > 0 and Playfield[x][y] < 10) or (Playfield[x][y] == 11) or (Playfield[x][y] == 14) ):
-											allowTileSelection = true
-									elif (SelectedTileIndex > 0):
-										var posX = SelectedTilePlayfieldX[SelectedTileIndex-1]
-										var posY = SelectedTilePlayfieldY[SelectedTileIndex-1]
-
-										if ( (Playfield[x][y] > -1 and Playfield[x][y] < 10) ):
-											allowTileSelection = true
-											
-											if ( Playfield[x][y] == 0 and (Playfield[posX][posY] == 10 or Playfield[posX][posY] == 11 or Playfield[posX][posY] == 12 and Playfield[posX][posY] == 13) ):
-												allowTileSelection = false
-
-											if ( Playfield[x][y] == 0 and (Playfield[posX][posY] == 15) ):
-												allowTileSelection = false
-
-											if ( Playfield[x][y] == 0 and (Playfield[posX][posY] == 13) ):
-												allowTileSelection = false
-										elif (Playfield[posX][posY] > -1 and Playfield[posX][posY] < 10):
-											if (Playfield[x][y] == 10):
-												if (PlusIndex == -1):
-													allowTileSelection = true
-											elif (Playfield[x][y] == 11):
-												if (MinusIndex == -1):
-													allowTileSelection = true
-											elif (Playfield[x][y] == 12):
-												if (MultiplyIndex == -1):
-													allowTileSelection = true
-											elif (Playfield[x][y] == 13):
-												if (DivideIndex == -1):
-													allowTileSelection = true
-
-											if (Playfield[x][y] == 15 and SelectedTileIndex > 2 and ThereIsAnOperator == true):
-												if (ThereIsAnEqual == false):
-													allowTileSelection = true
-
-										if (Playfield[x][y] == 11 and (Playfield[posX][posY] == 10 or Playfield[posX][posY] == 12 or Playfield[posX][posY] == 13) ):
-											allowTileSelection = true
-
-										if (Playfield[x][y] == 0 and Playfield[posX][posY] == 12):
-											allowTileSelection = false
-
-										if (Playfield[x][y] == 11 and Playfield[posX][posY] == 15):
-											allowTileSelection = true
-
-										if (ThereIsAnEqual == true and MinusIndex > -1 and Playfield[posX][posY] == 15 and Playfield[x][y] == 0):
-											allowTileSelection = true
-
-										if (SelectedTileIndex > 1):
-											var checkX = SelectedTilePlayfieldX[SelectedTileIndex-2]
-											var checkY = SelectedTilePlayfieldY[SelectedTileIndex-2]
-											if (ThereIsAnEqual == true and MinusIndex > -1 and Playfield[checkX][checkY] == 15 and Playfield[posX][posY] == 0 and Playfield[x][y] > -1 and Playfield[x][y] < 10):
-												allowTileSelection = false
-
-										if ( Playfield[x][y] == 14 and ((Playfield[posX][posY] > -1 and Playfield[posX][posY] < 10)) ):
-											allowTileSelection = true
-
-										if ( Playfield[x][y] == 14 and (Playfield[posX][posY] > 9 and Playfield[posX][posY] < 14) or Playfield[posX][posY] == 15 ):
-											allowTileSelection = true
+									allowTileSelection = true
 
 					screenX+=50
 
