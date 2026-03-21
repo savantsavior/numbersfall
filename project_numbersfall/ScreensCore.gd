@@ -1513,7 +1513,7 @@ func DisplayPlayingGameScreen():
 				RenderingServer.canvas_item_set_transform(VisualsCore.Sprites.ci_rid[index], Transform2D().translated(Vector2(-99999 - sprite_size.x / 2.0, -99999 - sprite_size.y / 2.0)))
 
 		var selectedIndex = 0
-		var screenY = 500-37+11
+		var screenY = 500-37+11-1
 		var screenX = 99-11
 		for y in range(12):
 			for x in range(18):
@@ -1534,12 +1534,12 @@ func DisplayPlayingGameScreen():
 					LogicCore.TileSpriteIndex[LogicCore.Playfield[x][y]]+=1
 
 				screenX+=50
-			
-			screenX = 99-11
+
+			screenX = 99-11-1
 			screenY-=50
 
 		screenY = 500-37+86
-		screenX = 99-11
+		screenX = 99-11-1
 
 		for index in range(16):
 			LogicCore.TileSpriteIndex[index] = 900

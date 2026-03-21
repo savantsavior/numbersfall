@@ -204,7 +204,7 @@ func SetupForNewGame():
 
 	FallingTileX = 0
 	FallingTileY = 11
-	FallingTileScreenX = 99-11
+	FallingTileScreenX = 99-11-1
 	FallingTileScreenY = (500-37+10) - (FallingTileY*50)
 	FallingTileYoffset = 0
 
@@ -285,7 +285,7 @@ func SetUpNextFallingTile():
 		AudioCore.PlayEffect(4)
 		return
 
-	FallingTileScreenX = 99 - 11 + (FallingTileX*50)
+	FallingTileScreenX = 99 - 11 - 1 + (FallingTileX*50)
 	FallingTileScreenY = (500-37+11) - (FallingTileY*50)
 	FallingTileYoffset = 0
 
