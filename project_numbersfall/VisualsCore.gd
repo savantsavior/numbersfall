@@ -204,31 +204,8 @@ func _ready():
 	Sprites.SpriteImage[118] = load("res://media/images/gui/Pause.png")
 	Sprites.SpriteActive[118] = true
 
-	Sprites.SpriteImage[119] = load("res://media/images/gui/Play.png")
-	Sprites.SpriteActive[119] = true
-
-	Sprites.SpriteImage[180] = load("res://media/images/gui/Keyboard.png")
-	Sprites.SpriteActive[180] = true
-	Sprites.SpriteImage[181] = load("res://media/images/gui/MouseTouch.png")
-	Sprites.SpriteActive[181] = true
-
 	Sprites.SpriteImage[190] = load("res://media/images/gui/Play2.png")
 	Sprites.SpriteActive[190] = true
-
-	Sprites.SpriteImage[191] = load("res://media/images/playing/Tile1.png")
-	Sprites.SpriteActive[191] = true
-
-	Sprites.SpriteImage[192] = load("res://media/images/playing/TilePlus.png")
-	Sprites.SpriteActive[192] = true
-
-	Sprites.SpriteImage[193] = load("res://media/images/playing/Tile2.png")
-	Sprites.SpriteActive[193] = true
-
-	Sprites.SpriteImage[194] = load("res://media/images/playing/TileEqual.png")
-	Sprites.SpriteActive[194] = true
-
-	Sprites.SpriteImage[195] = load("res://media/images/playing/Tile3.png")
-	Sprites.SpriteActive[195] = true
 
 	for index in range(0, 100):
 		Sprites.SpriteImage[200+index] = load("res://media/images/gui/NameInputButton2.png")
@@ -522,14 +499,12 @@ func DrawSprite(index, x, y, scaleX, scaleY, rotationDegree, red, green, blue, a
 #                                   Godot Version 3.5 To 4.0 Conversion By: "flairetic"
 #----------------------------------------------------------------------------------------
 func DeleteAllTexts():
-	var size = (TextCurrentIndex - 1)
 
-	for index in range(size, 9, -1):
+	for index in range( (TextCurrentIndex - 1), 9, -1 ):
 		if (TextIsUsed[index] == true):
+			TextIsUsed[index] = false
 			remove_child(Texts.TextImage[index])
 
-	for _index in range(0, TextCurrentIndex):
-		TextIsUsed[_index] = false
 
 	TextCurrentIndex = 10
 
@@ -548,13 +523,14 @@ func DrawnTextChangeScaleRotation(index, scaleX, scaleY, rotations):
 #----------------------------------------------------------------------------------------
 # Godot Version 3.5 To 4.0 Conversion By: "flairetic":
 func DrawText(index, text, x, y, horizontalJustification, fontToUseIndex, fontSize, scaleX, scaleY, rotations, red, green, blue, alpha, outlineRed, outlineGreen, outlineBlue):
+
 	if ( index > (TextCurrentIndex-1) ):
 		Texts.TextImage.append(RichTextLabel.new())
 		add_child(Texts.TextImage[index])
 		TextIsUsed[index] = true
 
 	var xValue = x
-#
+
 	if horizontalJustification == 0:
 		Texts.TextImage[index].text = text
 		Texts.TextImage[index].set_use_bbcode(false)

@@ -219,7 +219,7 @@ func ApplyScreenFadeTransition():
 		else:
 			ScreenFadeTransparency = 1.0
 			ScreenFadeStatus = FadingFromBlack
-			
+
 			VisualsCore.MoveAllActiveSpritesOffScreen()
 			VisualsCore.DeleteAllTexts()
 			InterfaceCore.DeleteAllGUI()
@@ -381,7 +381,7 @@ func DisplayTitleScreen():
 		elif (LogicCore.HideCopyright == true):
 			VisualsCore.DrawText(VisualsCore.TextCurrentIndex, "(C)2026 By SavantSavior.Itch.io", 0, 640-19-4-15+10, 1, 0, 35, 1.0, 1.0, 0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0)
 
-		VisualsCore.DrawText(VisualsCore.TextCurrentIndex, LogicCore.Version, 10, VisualsCore.ScreenHeight-15, 0, 1, 15, 1.0, 1.0, 0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0)
+		VisualsCore.DrawText(VisualsCore.TextCurrentIndex, LogicCore.Version, 10, VisualsCore.ScreenHeight-15+3, 0, 1, 15, 1.0, 1.0, 0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0)
 
 		InterfaceCore.ArrowSetSelectedByKeyboardLast = -1
 
@@ -1350,6 +1350,8 @@ func DisplayAboutScreen():
 			VisualsCore.DrawSprite(23, VisualsCore.ScreenWidth/2.0, TS1ScreenY, StaffScreenTSOneScale, StaffScreenTSOneScale, 0, 1.0, 1.0, 1.0, 1.0)
 
 	if ScreenFadeStatus == FadingToBlack && ScreenFadeTransparency == 0.5:
+#		VisualsCore.UnloadAboutScreenTexts()
+		
 		if (LogicCore.GameWon == true and LogicCore.GameMode == LogicCore.TurboStoryMode and LogicCore.SecretCodeCombined != 2778):
 			LogicCore.SecretCode[0] = 5
 			LogicCore.SecretCode[1] = 4

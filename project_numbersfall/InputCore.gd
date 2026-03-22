@@ -34,7 +34,7 @@ const JoyDown				= 3
 const JoyLeft				= 4
 var JoystickDirection = []
 
-const NotPressed				= 0
+const NotPressed			= 0
 const Pressed				= 1
 var JoyButtonOne = []
 var JoyButtonTwo = []
