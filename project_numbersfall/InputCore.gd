@@ -367,7 +367,7 @@ func _input(event):
 		MouseButtonLeftPressed = false
 		TouchTwoPressed = false
 
-	if ScreensCore.ScreenFadeStatus != ScreensCore.FadingIdle:  return false
+	if ScreensCore.ScreenFadeStatus != ScreensCore.FadingIdle:  return
 
 	MouseButtonLeftPressed = false
 	if (InputCore.DelayAllUserInput > -1):  return

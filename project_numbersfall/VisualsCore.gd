@@ -168,9 +168,6 @@ func _ready():
 	Sprites.SpriteImage[23] = load("res://media/images/backgrounds/BG_Title_Logo.png")
 	Sprites.SpriteActive[23] = true
 
-	Sprites.SpriteImage[26] = load("res://media/images/gui/NF_GP_QR_Code.png")
-	Sprites.SpriteActive[26] = true
-
 	for index in range(30, 40):
 		Sprites.SpriteImage[index] = load("res://media/images/gui/ScreenLine2.png")
 		Sprites.SpriteActive[index] = true
