@@ -25,7 +25,7 @@ var HighScoreScore = []
 var PlayerWithHighestScore
 var NewHighScoreRank
 
-const FILE_NAME = "user://NumbersFall-1_1_0-Retail2d-game-data.json"
+const FILE_NAME = "user://NumbersFall-1_1_0-Retail3b-game-data.json"
 var godot_Temp_Version = Engine.get_version_info()
 var GODOT_VERSION = godot_Temp_Version.string
 
@@ -54,9 +54,9 @@ func CheckForNewHighScore():
 func ClearHighScores():
 	for mode in range(0, 8):
 		HighScoreName[mode][0] = "JeZxLee"
-		HighScoreName[mode][1] = "GodotEngine.org v4.6.1+"
-		HighScoreName[mode][2] = "Suno.com A.I. Music + Lyrics"
-		HighScoreName[mode][3] = "Canva.com A.I. Images"
+		HighScoreName[mode][1] = "''GodotEngine.org'' v4.6.1+"
+		HighScoreName[mode][2] = "''Suno.com'' A.I. Music + Lyrics"
+		HighScoreName[mode][3] = "''OpenArt.ai'' A.I. Images"
 		HighScoreName[mode][4] = "flairetic"
 		HighScoreName[mode][5] = "EvanR"
 		HighScoreName[mode][6] = "Daotheman"

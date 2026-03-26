@@ -20,7 +20,7 @@ extends Node2D
 
 var HideCopyright = false
 
-var Version = "Retail 1.1.0 R2"
+var Version = "Retail 1.1.0 R3"
 
 const ChildStoryMode				= 0
 const TeenStoryMode					= 2
@@ -100,14 +100,19 @@ var PiecesCanStillFall = false
 
 var BonusScore
 
-var PlusIndex
-var MinusIndex
-var MinusTwoIndex
-var MultiplyIndex
-var DivideIndex
-var DecimalIndex
-var DecimalTwoIndex
+var PlusIndex = []
+var MinusIndex = []
+var MultiplyIndex = []
+var DivideIndex = []
+var DecimalIndex = []
 var EqualIndex
+
+var PlusShown = []
+var MinusShown = []
+var MultiplyShown = []
+var DivideShown = []
+var DecimalShown = []
+var EqualShown
 
 var TheEnd
 
@@ -128,6 +133,55 @@ var UndoAction = 1
 var EnableRightClick = 1
 
 var FramesSinceLastPlayerInput = 0
+
+#---------------------------------------------------------------------------------------
+func ClearShown():
+	for index in range(2):
+		PlusShown[index] = false
+		MinusShown[index] = false
+		MultiplyShown[index] = false
+		DivideShown[index] = false
+		DecimalShown[index] = false
+
+	EqualShown = false
+
+	pass
+
+#---------------------------------------------------------------------------------------
+func FindOperators():
+	ClearShown()
+
+	for y in range(0, 12):
+		for x in range(0, 18):
+			if (Playfield[x][y] == 10):
+				if (PlusShown[0] == false):
+					PlusShown[0] = true
+				else:
+					PlusShown[1] = true
+			elif (Playfield[x][y] == 11):
+				if (MinusShown[0] == false):
+					MinusShown[0] = true
+				else:
+					MinusShown[1] = true
+			elif (Playfield[x][y] == 12):
+				if (MultiplyShown[0] == false):
+					MultiplyShown[0] = true
+				else:
+					MultiplyShown[1] = true
+			elif (Playfield[x][y] == 13):
+				if (DivideShown[0] == false):
+					DivideShown[0] = true
+				else:
+					DivideShown[1] = true
+			elif (Playfield[x][y] == 14):
+				if (DecimalShown[0] == false):
+					DecimalShown[0] = true
+				else:
+					DecimalShown[1] = true
+			elif (Playfield[x][y] == 15):
+				EqualShown = true
+
+	pass
 
 #---------------------------------------------------------------------------------------
 func SetupForNewGame():
@@ -158,48 +212,18 @@ func SetupForNewGame():
 			for x in range(0, 18):
 				Playfield[x][y] = (randi() % 10)
 
-		Playfield[randi() % 12][randi() % 2] = 10
-		Playfield[randi() % 12][randi() % 2] = 11
-		Playfield[randi() % 12][randi() % 2] = 12
-		Playfield[randi() % 12][randi() % 2] = 13
-
-		Playfield[randi() % 12][randi() % 2] = 11
-
-		Playfield[randi() % 12][randi() % 2] = 14
-		Playfield[randi() % 12][randi() % 2] = 14
+		for index in range(2):
+			Playfield[randi() % 12][randi() % 2] = 10
+			Playfield[randi() % 12][randi() % 2] = 11
+			Playfield[randi() % 12][randi() % 2] = 12
+			Playfield[randi() % 12][randi() % 2] = 13
+			Playfield[randi() % 12][randi() % 2] = 14
 
 		Playfield[randi() % 12][randi() % 2] = 15
 
-		var shownPlus = false
-		var shownMinus = false
-		var shownMinusTwo = false
-		var shownMultiply = false
-		var shownDivide = false
-		var shownDecimal = false
-		var shownDecimalTwo = false
-		var shownEqual = false
-		for y in range(0, 12):
-			for x in range(0, 18):
-				if (Playfield[x][y] == 10):  shownPlus = true
-				
-				if (Playfield[x][y] == 11):
-					if (shownMinus == false):
-						shownMinus = true
-					elif (shownMinusTwo == false):
-						shownMinusTwo = true
-				
-				if (Playfield[x][y] == 12):  shownMultiply = true
-				if (Playfield[x][y] == 13):  shownDivide = true
+		FindOperators()
 
-				if (Playfield[x][y] == 14):
-					if (shownDecimal == false):
-						shownDecimal = true
-					elif (shownDecimalTwo == false):
-						shownDecimalTwo = true
-
-				if (Playfield[x][y] == 15):  shownEqual = true
-
-		if (shownPlus == true and shownMinus == true and shownMinusTwo == true and shownMultiply == true and shownDivide == true and shownDecimal == true and shownDecimalTwo == true and shownEqual == true):
+		if (PlusShown[0] == true and PlusShown[1] == true and MinusShown[0] == true and MinusShown[1] == true and MultiplyShown[0] == true and MultiplyShown[1] == true and DivideShown[0] == true and DivideShown[1] == true and DecimalShown[0] == true and DecimalShown[1] == true and EqualShown == true):
 			allTilesShown = true
 
 	FallingTileX = 0
@@ -291,80 +315,48 @@ func SetUpNextFallingTile():
 
 	FallingTile = (randi() % 10)
 
-	var allTilesShown = false
-	while (allTilesShown == false):
-		var shownPlus = false
-		var shownMinus = false
-		var shownMinusTwo = false
-		var shownMultiply = false
-		var shownDivide = false
-		var shownDecimal = false
-		var shownDecimalTwo = false
-		var shownEqual = false
-		for y in range(0, 12):
-			for x in range(0, 18):
-				if (Playfield[x][y] == 10):  shownPlus = true
-				
-				if (Playfield[x][y] == 11):
-					if (shownMinus == false):
-						shownMinus = true
-					elif (shownMinusTwo == false):
-						shownMinusTwo = true
-				
-				if (Playfield[x][y] == 12):  shownMultiply = true
-				if (Playfield[x][y] == 13):  shownDivide = true
+	FindOperators()
 
-				if (Playfield[x][y] == 14):
-					if (shownDecimal == false):
-						shownDecimal = true
-					elif (shownDecimalTwo == false):
-						shownDecimalTwo = true
+	if (EqualShown == false):
+		FallingTile = 15
 
-				if (Playfield[x][y] == 15):  shownEqual = true
+	elif (PlusShown[0] == false):
+		FallingTile = 10
+	elif (MinusShown[0] == false):
+		FallingTile = 11
+	elif (MultiplyShown[0] == false):
+		FallingTile = 12
+	elif (DivideShown[0] == false):
+		FallingTile = 13
+	elif (DecimalShown[0] == false):
+		FallingTile = 14
 
-		if (shownEqual == false):
-			FallingTile = 15
-			return
-		elif (shownPlus == false):
-			FallingTile = 10
-			return
-		elif (shownMinus == false):
-			FallingTile = 11
-			return
-		elif (shownMultiply == false):
-			FallingTile = 12
-			return
-		elif (shownDivide == false):
-			FallingTile = 13
-			return
-		elif (shownDecimal == false):
-			FallingTile = 14
-			return
-		elif (shownMinusTwo == false):
-			FallingTile = 11
-			return
-		elif (shownDecimalTwo == false):
-			FallingTile = 14
-			return
-
-		if (shownPlus == true and shownMinus == true and shownMinusTwo == true and shownMultiply == true and shownDivide == true and shownDecimalTwo == true and shownDecimalTwo == true and shownEqual == true):
-			allTilesShown = true
+	elif (PlusShown[1] == false):
+		FallingTile = 10
+	elif (MinusShown[1] == false):
+		FallingTile = 11
+	elif (MultiplyShown[1] == false):
+		FallingTile = 12
+	elif (DivideShown[1] == false):
+		FallingTile = 13
+	elif (DecimalShown[1] == false):
+		FallingTile = 14
 
 	pass
 
 #----------------------------------------------------------------------------------------
 func ConvertTilesToString():
+	for index in range(2):
+		PlusIndex[index] = -1
+		MinusIndex[index] = -1
+		MultiplyIndex[index] = -1
+		DivideIndex[index] = -1
+		DecimalIndex[index] = -1
+
+	EqualIndex = -1
+
 	ThereIsAnOperator = false
 	ThereIsAnEqual = false
-	
-	PlusIndex = -1
-	MinusIndex = -1
-	MinusTwoIndex = -1
-	MultiplyIndex = -1
-	DivideIndex = -1
-	DecimalIndex = -1
-	DecimalTwoIndex = -1
-	EqualIndex = -1
 
 	TheEnd = 0
 
@@ -390,34 +382,48 @@ func ConvertTilesToString():
 			elif (part ==  9):  ValueToCheck+="9"
 			elif (part == 10):
 				ValueToCheck+="+"
-				PlusIndex = index
+
+				if (PlusIndex[0] == -1):
+					PlusIndex[0] = index
+				else:
+					PlusIndex[1] = index
+
 				ThereIsAnOperator = true
 			elif (part == 11):
 				ValueToCheck+="-"
 
-				if (MinusIndex == -1):
-					MinusIndex = index
-				elif (MinusTwoIndex == -1):
-					MinusTwoIndex = index
+				if (MinusIndex[0] == -1):
+					MinusIndex[0] = index
+				else:
+					MinusIndex[1] = index
 
 				ThereIsAnOperator = true
 			elif (part == 12):
 				ValueToCheck+="*"
+
+				if (MultiplyIndex[0] == -1):
+					MultiplyIndex[0] = index
+				else:
+					MultiplyIndex[1] = index
+
 				ThereIsAnOperator = true
-				MultiplyIndex = index
 			elif (part == 13):
 				ValueToCheck+="/"
+
+				if (DivideIndex[0] == -1):
+					DivideIndex[0] = index
+				else:
+					DivideIndex[1] = index
+
 				ThereIsAnOperator = true
-				DivideIndex = index
 			elif (part == 14):
 				ValueToCheck+="."
 
-				if (DecimalIndex == -1):
-					DecimalIndex = index
-				elif (DecimalTwoIndex == -1):
-					DecimalTwoIndex = index
-
-			elif (part == 15):
+				if (DecimalIndex[0] == -1):
+					DecimalIndex[0] = index
+				else:
+					DecimalIndex[1] = index
+			elif(part == 15):
 				ValueToCheck+="="
 				ThereIsAnEqual = true
 				EqualIndex = index
@@ -449,25 +455,22 @@ func CheckEquationNewPerfect():
 
 	if (is_equal_approx(resultLeft, resultRight) == true):
 		var scoreAdd = 0
-		if (MultiplyIndex > -1):
-			scoreAdd+=(5)
-			numberOfOperators+=1
-		if (DivideIndex > -1):
-			scoreAdd+=(10)
-			numberOfOperators+=1
-		if (PlusIndex > -1):
-			scoreAdd+=(5)
-			numberOfOperators+=1
-		if (MinusIndex > -1):
-			scoreAdd+=(10)
-			numberOfOperators+=1
-		if (MinusTwoIndex > -1):
-			scoreAdd+=(10*2)
-			numberOfOperators+=1
-		if (DecimalIndex > -1):
-			scoreAdd+=(15)
-		if (DecimalTwoIndex > -1):
-			scoreAdd+=(15*2)
+
+		for index in range(2):
+			if (MultiplyIndex[index] > -1):
+				scoreAdd+=(5)
+				numberOfOperators+=1
+			if (DivideIndex[index] > -1):
+				scoreAdd+=(10)
+				numberOfOperators+=1
+			if (PlusIndex[index] > -1):
+				scoreAdd+=(5)
+				numberOfOperators+=1
+			if (MinusIndex[index] > -1):
+				scoreAdd+=(10)
+				numberOfOperators+=1
+			if (DecimalIndex[index] > -1):
+				scoreAdd+=(15)
 
 		if (Level < 10):
 			Score+=( scoreAdd * Level * SelectedTileIndex * numberOfOperators )
@@ -696,12 +699,28 @@ func _ready():
 
 	PiecesCanStillFall = false
 
-	PlusIndex = -1
-	MinusIndex = -1
-	MultiplyIndex = -1
-	DivideIndex = -1
-	DecimalIndex = -1
+	PlusIndex.resize(2)
+	MinusIndex.resize(2)
+	MultiplyIndex.resize(2)
+	DivideIndex.resize(2)
+	DecimalIndex.resize(2)
+
+	for index in range(2):
+		PlusIndex[index] = -1
+		MinusIndex[index] = -1
+		MultiplyIndex[index] = -1
+		DivideIndex[index] = -1
+		DecimalIndex[index] = -1
+
 	EqualIndex = -1
+
+	PlusShown.resize(2)
+	MinusShown.resize(2)
+	MultiplyShown.resize(2)
+	DivideShown.resize(2)
+	DecimalShown.resize(2)
+
+	ClearShown()
 
 	number.resize(16)
 	mathOperator.resize(16)
