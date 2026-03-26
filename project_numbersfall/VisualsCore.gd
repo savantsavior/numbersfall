@@ -493,7 +493,7 @@ func DrawSprite(index, x, y, scaleX, scaleY, rotationDegree, red, green, blue, a
 #----------------------------------------------------------------------------------------
 func DeleteAllTexts():
 
-	for index in range( (TextCurrentIndex - 1), 9, -1 ):
+	for index in range(10, 1000):
 		if (TextIsUsed[index] == true):
 			TextIsUsed[index] = false
 			remove_child(Texts.TextImage[index])

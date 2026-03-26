@@ -223,7 +223,7 @@ func ApplyScreenFadeTransition():
 			VisualsCore.MoveAllActiveSpritesOffScreen()
 			VisualsCore.DeleteAllTexts()
 			InterfaceCore.DeleteAllGUI()
-			InterfaceCore.InitializeGUI(false)
+			InterfaceCore.InitializeGUI(true)
 
 			ScreenToDisplay = ScreenToDisplayNext
 
