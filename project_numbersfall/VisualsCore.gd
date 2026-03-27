@@ -115,8 +115,13 @@ var StarColorR = []
 var StarColorG = []
 var StarColorB = []
 
+var ScreenIsDirty = false
+var ScreenIsDirtyFrame = 0
+
 #----------------------------------------------------------------------------------------
 func _ready():
+	ScreenIsDirty = true
+
 	for _index in range(0, 10):
 		FramesPerSecondArray.append(0)
 

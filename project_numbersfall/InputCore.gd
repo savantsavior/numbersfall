@@ -89,6 +89,8 @@ var HTML5input = InputKeyboard
 
 var AndroidScreenData = []
 
+var InputDetected = false
+
 #----------------------------------------------------------------------------------------
 func _ready():
 	set_process_input(true)
@@ -217,6 +219,8 @@ func _ready():
 	AndroidScreenData[0] = -1
 	AndroidScreenData[1] = -1
 
+	InputDetected = false
+
 	pass
 
 #----------------------------------------------------------------------------------------
@@ -318,7 +322,7 @@ func _process(_delta):
 
 		if (JoyButtonTwo[index] != NotPressed):
 			JoyButtonTwo[InputAny] = JoyButtonTwo[index]
-		
+
 	if Input.is_action_pressed("Shift"):
 		ShiftPressedOnKeyboard = true
 	else:
@@ -352,6 +356,8 @@ func _process(_delta):
 
 #----------------------------------------------------------------------------------------
 func _input(event):
+	InputDetected = false
+
 	KeyboardSpacebarPressed = false
 	KeyboardEnterPressed = false
 	KeyboardBackspacePressed = false
@@ -374,7 +380,9 @@ func _input(event):
 
 	if (ScreensCore.OperatingSys != ScreensCore.OSAndroid || ScreensCore.VideoAndroid == true):
 		if event is InputEventKey:
+			InputDetected = true
 			if event.keycode == KEY_ESCAPE and event.pressed:
+				if (ScreensCore.ScreenToDisplay < ScreensCore.TitleScreen):  AudioCore.PlayEffect(1)
 				ScreensCore.ScreenToDisplayNext = ScreensCore.TitleScreen
 				ScreensCore.ScreenFadeStatus = ScreensCore.FadingToBlack
 				LogicCore.StillPlaying = false
@@ -384,9 +392,11 @@ func _input(event):
 				InputCore.DelayAllUserInput = 35
 				AudioCore.PlayMusic(0, true)
 			elif event.keycode == KEY_SPACE and event.pressed:
+				if (ScreensCore.ScreenToDisplay < ScreensCore.TitleScreen):  AudioCore.PlayEffect(1)
 				KeyboardSpacebarPressed = true
 				KeyTypedOnKeyboard = "_"
 			elif event.keycode == KEY_ENTER and event.pressed:
+				if (ScreensCore.ScreenToDisplay < ScreensCore.TitleScreen):  AudioCore.PlayEffect(1)
 				KeyboardEnterPressed = true
 			elif event.keycode == KEY_BACKSPACE and event.pressed:
 				KeyboardBackspacePressed = true
@@ -446,5 +456,8 @@ func _input(event):
 				TouchTwoPressed = false
 				TouchTwoScreenX = 999999
 				TouchTwoScreenY = 999999
+
+	if (JoystickDirection[InputKeyboard] != JoyCentered or JoyButtonOne[InputKeyboard] != NotPressed or JoyButtonTwo[InputKeyboard] != NotPressed or MouseButtonLeftPressed != false or MouseButtonRightPressed != false):
+		InputDetected = true
 
 	pass

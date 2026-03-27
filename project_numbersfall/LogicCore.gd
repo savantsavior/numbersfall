@@ -20,7 +20,7 @@ extends Node2D
 
 var HideCopyright = false
 
-var Version = "Retail 1.1.0 R3"
+var Version = "Retail 1.1.0 R4"
 
 const ChildStoryMode				= 0
 const TeenStoryMode					= 2

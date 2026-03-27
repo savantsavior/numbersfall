@@ -139,12 +139,16 @@ var TitleScreenOldEffectsVol
 
 var CutSceneClickTextFlash
 
+const SCREENDISPLAYTIMER = (120*2)
+
 #----------------------------------------------------------------------------------------
 func _ready():
 	ScreenFadeStatus = FadingFromBlack
 	ScreenFadeTransparency = 1.0
 
 	ScreenToDisplay = GodotScreen
+
+	ScreenDisplayTimer = -1
 
 	if (OS.get_name() == "Windows" or OS.get_name() == "Linux"):
 		OperatingSys = OSDesktop
@@ -206,7 +210,7 @@ func _process(_delta):
 #----------------------------------------------------------------------------------------
 func ApplyScreenFadeTransition():
 	if ScreenFadeStatus == FadingIdle: return
-	
+
 	if ScreenFadeStatus == FadingFromBlack:
 		if ScreenFadeTransparency > 0.25:
 			ScreenFadeTransparency-=0.25
@@ -251,7 +255,6 @@ func DisplayHTML5Screen():
 		ScreenToDisplayNext = GodotScreen
 		ScreenFadeStatus = FadingToBlack
 		ScreenDisplayTimer = -1
-		if InputCore.MouseButtonLeftPressed == true || InputCore.KeyboardSpacebarPressed == true || InputCore.JoyButtonOne[InputCore.InputAny] == InputCore.Pressed:  AudioCore.PlayEffect(1)
 
 	if ScreenFadeStatus == FadingToBlack && ScreenFadeTransparency == 0.5:
 		ScreenToDisplayNext = GodotScreen
@@ -272,7 +275,7 @@ func DisplayGodotScreen():
 
 		VisualsCore.DrawText(VisualsCore.TextCurrentIndex, DataCore.GODOT_VERSION, 445+10, 185+20+15-5-14, 0, 1, 35, 1.0, 1.0, 0, 0.7, 0.7, 0.7, 1.0, 0.9, 0.9, 0.9)
 
-		ScreenDisplayTimer = (120*2)
+		ScreenDisplayTimer = SCREENDISPLAYTIMER
 
 		if (VideoHTML5 == true or VideoAndroid == true):
 			ScreenDisplayTimer+=2000
@@ -281,13 +284,10 @@ func DisplayGodotScreen():
 		ScreenDisplayTimer = 1
 		InputCore.DelayAllUserInput = 20
 
-	if 	ScreenDisplayTimer > 1:
-		ScreenDisplayTimer-=1
-	elif ScreenDisplayTimer == 1:
+	if ScreenDisplayTimer == 1:
 		ScreenToDisplayNext = FASScreen
 		ScreenFadeStatus = FadingToBlack
 		ScreenDisplayTimer = -1
-		if InputCore.MouseButtonLeftPressed == true || InputCore.KeyboardSpacebarPressed == true || InputCore.JoyButtonOne[InputCore.InputAny] == InputCore.Pressed:  AudioCore.PlayEffect(1)
 
 	if ScreenFadeStatus == FadingToBlack && ScreenFadeTransparency == 0.5:
 		ScreenToDisplayNext = TitleScreen
@@ -305,7 +305,7 @@ func DisplayFASScreen():
 
 		VisualsCore.DrawSprite(7, VisualsCore.ScreenWidth/2.0, VisualsCore.ScreenHeight/2.0, 1.0, 1.0, 0, 1.0, 1.0, 1.0, 1.0)
 
-		ScreenDisplayTimer = (160*2)
+		ScreenDisplayTimer = SCREENDISPLAYTIMER
 
 	if (InputCore.DelayAllUserInput == -1 && (InputCore.MouseButtonLeftPressed == true || InputCore.KeyboardSpacebarPressed == true || InputCore.KeyboardEnterPressed == true || InputCore.JoyButtonOne[InputCore.InputAny] == InputCore.Pressed)) && ScreenDisplayTimer > 1:
 		ScreenDisplayTimer = 1
@@ -317,7 +317,6 @@ func DisplayFASScreen():
 		ScreenToDisplayNext = TitleScreen
 		ScreenFadeStatus = FadingToBlack
 		ScreenDisplayTimer = -1
-		if InputCore.MouseButtonLeftPressed == true || InputCore.KeyboardSpacebarPressed == true || InputCore.JoyButtonOne[InputCore.InputAny] == InputCore.Pressed:  AudioCore.PlayEffect(1)
 
 	if ScreenFadeStatus == FadingToBlack && ScreenFadeTransparency == 0.5:
 		ScreenToDisplayNext = TitleScreen
@@ -491,7 +490,7 @@ func DisplayInputScreen():
 		ScreenToDisplayNext = GodotScreen
 		ScreenFadeStatus = FadingToBlack
 		ScreenDisplayTimer = -1
-		if InputCore.MouseButtonLeftPressed == true || InputCore.KeyboardSpacebarPressed == true || InputCore.JoyButtonOne[InputCore.InputAny] == InputCore.Pressed:  AudioCore.PlayEffect(1)
+#		if InputCore.MouseButtonLeftPressed == true || InputCore.KeyboardSpacebarPressed == true || InputCore.JoyButtonOne[InputCore.InputAny] == InputCore.Pressed:  AudioCore.PlayEffect(1)
 
 	if ScreenFadeStatus == FadingToBlack && ScreenFadeTransparency == 0.5:
 		ScreenToDisplayNext = GodotScreen
@@ -1218,14 +1217,16 @@ func DisplayHighScoresScreen():
 		if LogicCore.GameMode > 0:
 			LogicCore.GameMode-=1
 		else:  LogicCore.GameMode = 7
-		
+
+		VisualsCore.ScreenIsDirty = true
 		ScreenToDisplayNext = HighScoresScreen
 		ScreenFadeStatus = FadingToBlack
 	elif InterfaceCore.ThisArrowWasPressed(0.5) == true:
 		if LogicCore.GameMode < 7:
 			LogicCore.GameMode+=1
 		else:  LogicCore.GameMode = 0
-		
+
+		VisualsCore.ScreenIsDirty = true
 		ScreenToDisplayNext = HighScoresScreen
 		ScreenFadeStatus = FadingToBlack
 
@@ -1908,69 +1909,105 @@ func DisplayCutSceneScreen():
 
 #----------------------------------------------------------------------------------------
 func ProcessScreenToDisplay():
-	if ScreenToDisplay == HTML5Screen:
-		DisplayHTML5Screen()
-	elif ScreenToDisplay == GodotScreen:
-		DisplayGodotScreen()
-	elif ScreenToDisplay == FASScreen:
-		DisplayFASScreen()
-	elif ScreenToDisplay == TitleScreen:
-		DisplayTitleScreen()
-	elif ScreenToDisplay == InputScreen:
-		DisplayInputScreen()
-	elif ScreenToDisplay == OptionsScreen:
-		DisplayOptionsScreen()
-	elif ScreenToDisplay == HowToPlayScreen:
-		DisplayHowToPlayScreen()
-	elif ScreenToDisplay == HighScoresScreen:
-		DisplayHighScoresScreen()
-	elif ScreenToDisplay == AboutScreen:
-		DisplayAboutScreen()
-	elif ScreenToDisplay == MusicTestScreen:
-		DisplayMusicTestScreen()
-	elif ScreenToDisplay == PlayingGameScreen:
-		DisplayPlayingGameScreen()
-	elif ScreenToDisplay == NewHighScoreScreen:
-		DisplayNewHighScoreScreen()
-	elif ScreenToDisplay == CutSceneScreen:
-		DisplayCutSceneScreen()
+	if (InputCore.InputDetected == true):  VisualsCore.ScreenIsDirty = true
 
 	if (ScreenToDisplay != PlayingGameScreen):
-		InterfaceCore.DrawAllButtons()
-		InterfaceCore.DrawAllArrowSets()
+		if (InputCore.MouseButtonLeftPressed == true and ScreenToDisplay < TitleScreen):
+			AudioCore.PlayEffect(1)
 
-	InterfaceCore.DrawAllIcons()
+	if (InterfaceCore.Buttons.ButtonAnimationTimer[InterfaceCore.ButtonSelectedByKeyboard] > -1):  VisualsCore.ScreenIsDirty = true
 
-	ApplyScreenFadeTransition()
+	var arrowSetToCheck = -1
+	for index in range(0, InterfaceCore.NumberOfArrowSetsOnScreen):
+		if InterfaceCore.ArrowSets.ArrowSetLeftAnimationTimer[(index*2)] > -1:
+			arrowSetToCheck = index
+		elif InterfaceCore.ArrowSets.ArrowSetRightAnimationTimer[(index*2)] > -1:
+			arrowSetToCheck = (index+0.5)
 
-	if (LogicCore.SecretCodeCombined == 2777 || LogicCore.SecretCodeCombined == 8888 || LogicCore.SecretCodeCombined == 8889):
-		VisualsCore.FramesPerSecondText.TextImage[0].global_position.x = (VisualsCore.ScreenWidth-80)
+	if (arrowSetToCheck > -1):  VisualsCore.ScreenIsDirty = true
 
-		VisualsCore.FramesPerSecondFrames = (VisualsCore.FramesPerSecondFrames + 1)
+	if (InterfaceCore.NumberOfIconsOnScreen > 0):
+		for index in range(InterfaceCore.NumberOfIconsOnScreen):
+			if InterfaceCore.Icons.IconAnimationTimer[index] > -1:
+				VisualsCore.ScreenIsDirty = true
 
-		var ticks = Time.get_ticks_msec()
-		if (ticks > (1000+VisualsCore.FramesPerSecondLastSecondTick)):
-			VisualsCore.FramesPerSecondLastSecondTick = ticks
+	if 	ScreenDisplayTimer > 1:
+		ScreenDisplayTimer-=1
+	elif ScreenDisplayTimer == 1:
+		VisualsCore.ScreenIsDirty = true
 
-			VisualsCore.FramesPerSecondArrayIndex = (VisualsCore.FramesPerSecondArrayIndex + 1)
-			if (VisualsCore.FramesPerSecondArrayIndex > 9):  VisualsCore.FramesPerSecondArrayIndex = 0
+	if (ScreenFadeTransparency > 0.0):  VisualsCore.ScreenIsDirty = true
 
-			VisualsCore.FramesPerSecondArray[VisualsCore.FramesPerSecondArrayIndex] = VisualsCore.FramesPerSecondFrames
+	if (ScreenToDisplay == AboutScreen or ScreenToDisplay == PlayingGameScreen):  VisualsCore.ScreenIsDirty = true
 
-			VisualsCore.FramesPerSecondFrames = 0
+	if (VisualsCore.ScreenIsDirty == true):
+		VisualsCore.ScreenIsDirtyFrame+=1
+		print("Screen Is Dirty Frame = "+str(VisualsCore.ScreenIsDirtyFrame))
+		if ScreenToDisplay == HTML5Screen:
+			DisplayHTML5Screen()
+		elif ScreenToDisplay == GodotScreen:
+			DisplayGodotScreen()
+		elif ScreenToDisplay == FASScreen:
+			DisplayFASScreen()
+		elif ScreenToDisplay == TitleScreen:
+			DisplayTitleScreen()
+		elif ScreenToDisplay == InputScreen:
+			DisplayInputScreen()
+		elif ScreenToDisplay == OptionsScreen:
+			DisplayOptionsScreen()
+		elif ScreenToDisplay == HowToPlayScreen:
+			DisplayHowToPlayScreen()
+		elif ScreenToDisplay == HighScoresScreen:
+			DisplayHighScoresScreen()
+		elif ScreenToDisplay == AboutScreen:
+			DisplayAboutScreen()
+		elif ScreenToDisplay == MusicTestScreen:
+			DisplayMusicTestScreen()
+		elif ScreenToDisplay == PlayingGameScreen:
+			DisplayPlayingGameScreen()
+		elif ScreenToDisplay == NewHighScoreScreen:
+			DisplayNewHighScoreScreen()
+		elif ScreenToDisplay == CutSceneScreen:
+			DisplayCutSceneScreen()
 
-			VisualsCore.FramesPerSecondAverage = 0
-			for index in range(0, 10):
-				VisualsCore.FramesPerSecondAverage+=VisualsCore.FramesPerSecondArray[index]
+		if (ScreenToDisplay != PlayingGameScreen):
+			InterfaceCore.DrawAllButtons()
+			InterfaceCore.DrawAllArrowSets()
 
-			VisualsCore.FramesPerSecondAverage = (VisualsCore.FramesPerSecondAverage / 10)
-			VisualsCore.FramesPerSecondAverage = floor(VisualsCore.FramesPerSecondAverage)
+		InterfaceCore.DrawAllIcons()
 
-			if (ScreenToDisplay == PlayingGameScreen):
-				VisualsCore.FramesPerSecondText.TextImage[0].text = (" "+str(VisualsCore.FramesPerSecondAverage)+"/"+str(fps[LogicCore.GameMode]))
-			elif (ScreenToDisplay != PlayingGameScreen):
-				VisualsCore.FramesPerSecondText.TextImage[0].text = (" "+str(VisualsCore.FramesPerSecondAverage)+"/30")
-	else:
-		VisualsCore.FramesPerSecondText.TextImage[0].global_position.x = -9999
+		ApplyScreenFadeTransition()
+
+		if (LogicCore.SecretCodeCombined == 2777 || LogicCore.SecretCodeCombined == 8888 || LogicCore.SecretCodeCombined == 8889):
+			VisualsCore.FramesPerSecondText.TextImage[0].global_position.x = (VisualsCore.ScreenWidth-80)
+
+			VisualsCore.FramesPerSecondFrames = (VisualsCore.FramesPerSecondFrames + 1)
+
+			var ticks = Time.get_ticks_msec()
+			if (ticks > (1000+VisualsCore.FramesPerSecondLastSecondTick)):
+				VisualsCore.FramesPerSecondLastSecondTick = ticks
+
+				VisualsCore.FramesPerSecondArrayIndex = (VisualsCore.FramesPerSecondArrayIndex + 1)
+				if (VisualsCore.FramesPerSecondArrayIndex > 9):  VisualsCore.FramesPerSecondArrayIndex = 0
+
+				VisualsCore.FramesPerSecondArray[VisualsCore.FramesPerSecondArrayIndex] = VisualsCore.FramesPerSecondFrames
+
+				VisualsCore.FramesPerSecondFrames = 0
+
+				VisualsCore.FramesPerSecondAverage = 0
+				for index in range(0, 10):
+					VisualsCore.FramesPerSecondAverage+=VisualsCore.FramesPerSecondArray[index]
+
+				VisualsCore.FramesPerSecondAverage = (VisualsCore.FramesPerSecondAverage / 10)
+				VisualsCore.FramesPerSecondAverage = floor(VisualsCore.FramesPerSecondAverage)
+
+				if (ScreenToDisplay == PlayingGameScreen):
+					VisualsCore.FramesPerSecondText.TextImage[0].text = (" "+str(VisualsCore.FramesPerSecondAverage)+"/"+str(fps[LogicCore.GameMode]))
+				elif (ScreenToDisplay != PlayingGameScreen):
+					VisualsCore.FramesPerSecondText.TextImage[0].text = (" "+str(VisualsCore.FramesPerSecondAverage)+"/30")
+		else:
+			VisualsCore.FramesPerSecondText.TextImage[0].global_position.x = -9999
+
+	VisualsCore.ScreenIsDirty = false
 
 	pass
