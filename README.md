@@ -1,5 +1,5 @@
-# numbersfall
- MIT Open-Source Math Puzzle Game Using Godot Engine 4.6.1+
+# "NumbersFall"
+MIT Open-Source Math Puzzle Game Using Godot Engine 4.6.1+
 
 [Download free Godot Engine!](https://godotengine.org/)
 
