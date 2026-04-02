@@ -1290,6 +1290,8 @@ func DisplayAboutScreen():
 				RenderingServer.canvas_item_set_transform(VisualsCore.Sprites.ci_rid[(20000+indexTwo) + (1000*index)], Transform2D(0.0, Vector2(1.0, 1.0), 0.0, Vector2(-99999, -99999)))
 
 		TSOneDisplayTimer = 125
+		
+		InputCore.DelayAllUserInput = 50
 
 	if ScreenFadeStatus == FadingIdle:
 		for index in range(250):
@@ -1333,7 +1335,7 @@ func DisplayAboutScreen():
 			if (InputCore.DelayAllUserInput == -1 && (InputCore.MouseButtonLeftPressed == true || InputCore.KeyboardSpacebarPressed == true || InputCore.KeyboardEnterPressed == true || InputCore.JoyButtonOne[InputCore.InputAny] == InputCore.Pressed)):
 				ScreenFadeStatus = FadingToBlack
 				
-		if (InputCore.MouseButtonLeftPressed == true || InputCore.KeyboardSpacebarPressed == true || InputCore.KeyboardEnterPressed == true || InputCore.JoyButtonOne[InputCore.InputAny] == InputCore.Pressed): 
+		if ( (InputCore.MouseButtonLeftPressed == true || InputCore.KeyboardSpacebarPressed == true || InputCore.KeyboardEnterPressed == true || InputCore.JoyButtonOne[InputCore.InputAny] == InputCore.Pressed) && (InputCore.DelayAllUserInput == -1) ): 
 			InputCore.DelayAllUserInput = 30
 			ScreenFadeStatus = FadingToBlack
 		elif (TS1ScreenY <= (VisualsCore.ScreenHeight/2.0)):
@@ -1942,7 +1944,7 @@ func ProcessScreenToDisplay():
 
 	if (VisualsCore.ScreenIsDirty == true):
 		VisualsCore.ScreenIsDirtyFrame+=1
-		print("Screen Is Dirty Frame = "+str(VisualsCore.ScreenIsDirtyFrame))
+#		print("Screen Is Dirty Frame = "+str(VisualsCore.ScreenIsDirtyFrame))
 		if ScreenToDisplay == HTML5Screen:
 			DisplayHTML5Screen()
 		elif ScreenToDisplay == GodotScreen:

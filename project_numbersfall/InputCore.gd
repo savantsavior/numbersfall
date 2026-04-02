@@ -356,6 +356,8 @@ func _process(_delta):
 
 #----------------------------------------------------------------------------------------
 func _input(event):
+	var touchDetected = false
+
 	InputDetected = false
 
 	KeyboardSpacebarPressed = false
@@ -364,47 +366,49 @@ func _input(event):
 
 	KeyTypedOnKeyboard = "`"
 
-	if (ScreensCore.OperatingSys != ScreensCore.OSAndroid):
-		if (ScreensCore.ScreenToDisplay != ScreensCore.PlayingGameScreen):
-			MouseButtonLeftPressed = false
-
-		TouchTwoPressed = false
-	elif (ScreensCore.ScreenToDisplay != ScreensCore.PlayingGameScreen):
-		MouseButtonLeftPressed = false
-		TouchTwoPressed = false
-
 	if ScreensCore.ScreenFadeStatus != ScreensCore.FadingIdle:  return
 
 	MouseButtonLeftPressed = false
 	if (InputCore.DelayAllUserInput > -1):  return
 
-	if (ScreensCore.OperatingSys != ScreensCore.OSAndroid || ScreensCore.VideoAndroid == true):
-		if event is InputEventKey:
-			InputDetected = true
-			if event.keycode == KEY_ESCAPE and event.pressed:
-				if (ScreensCore.ScreenToDisplay < ScreensCore.TitleScreen):  AudioCore.PlayEffect(1)
-				ScreensCore.ScreenToDisplayNext = ScreensCore.TitleScreen
-				ScreensCore.ScreenFadeStatus = ScreensCore.FadingToBlack
-				LogicCore.StillPlaying = false
-				LogicCore.GameQuit = true
-				LogicCore.GameOver = true
-				InputCore.MouseButtonLeftPressed = false
-				InputCore.DelayAllUserInput = 35
-				AudioCore.PlayMusic(0, true)
-			elif event.keycode == KEY_SPACE and event.pressed:
-				if (ScreensCore.ScreenToDisplay < ScreensCore.TitleScreen):  AudioCore.PlayEffect(1)
-				KeyboardSpacebarPressed = true
-				KeyTypedOnKeyboard = "_"
-			elif event.keycode == KEY_ENTER and event.pressed:
-				if (ScreensCore.ScreenToDisplay < ScreensCore.TitleScreen):  AudioCore.PlayEffect(1)
-				KeyboardEnterPressed = true
-			elif event.keycode == KEY_BACKSPACE and event.pressed:
-				KeyboardBackspacePressed = true
+	if event is InputEventKey:
+		InputDetected = true
+		if event.keycode == KEY_ESCAPE and event.pressed:
+			if (ScreensCore.ScreenToDisplay < ScreensCore.TitleScreen):  AudioCore.PlayEffect(1)
+			ScreensCore.ScreenToDisplayNext = ScreensCore.TitleScreen
+			ScreensCore.ScreenFadeStatus = ScreensCore.FadingToBlack
+			LogicCore.StillPlaying = false
+			LogicCore.GameQuit = true
+			LogicCore.GameOver = true
+			InputCore.MouseButtonLeftPressed = false
+			InputCore.DelayAllUserInput = 35
+			AudioCore.PlayMusic(0, true)
+		elif event.keycode == KEY_SPACE and event.pressed:
+			if (ScreensCore.ScreenToDisplay < ScreensCore.TitleScreen):  AudioCore.PlayEffect(1)
+			KeyboardSpacebarPressed = true
+			KeyTypedOnKeyboard = "_"
+		elif event.keycode == KEY_ENTER and event.pressed:
+			if (ScreensCore.ScreenToDisplay < ScreensCore.TitleScreen):  AudioCore.PlayEffect(1)
+			KeyboardEnterPressed = true
+		elif event.keycode == KEY_BACKSPACE and event.pressed:
+			KeyboardBackspacePressed = true
 
-			if (event.pressed && event.keycode != KEY_SHIFT):
-				if (event.unicode > 32 && event.unicode < 137):
-					KeyTypedOnKeyboard = char(event.unicode)
+		if (event.pressed && event.keycode != KEY_SHIFT):
+			if (event.unicode > 32 && event.unicode < 137):
+				KeyTypedOnKeyboard = char(event.unicode)
 
+	if (event is InputEventScreenTouch and event.is_pressed() == true):
+		MouseButtonLeftPressed = true
+		MouseScreenX = event.position.x
+		MouseScreenY = event.position.y
+		touchDetected = true
+	elif (event is InputEventScreenDrag):
+		MouseButtonLeftPressed = true
+		MouseScreenX = event.position.x
+		MouseScreenY = event.position.y
+		touchDetected = true
+
+	if (touchDetected == false):
 		if event is InputEventMouseMotion:
 			MouseScreenX = event.position.x
 			MouseScreenY = event.position.y
@@ -429,35 +433,19 @@ func _input(event):
 				else:
 					MouseButtonRightPressed = false
 
-	elif (ScreensCore.OperatingSys == ScreensCore.OSAndroid):
-		if (ScreensCore.ScreenToDisplay != ScreensCore.PlayingGameScreen):
-			if (event is InputEventScreenTouch and event.is_pressed() == true and MouseButtonLeftPressed == false):
-				MouseButtonLeftPressed = true
-				MouseScreenX = event.position.x
-				MouseScreenY = event.position.y
-			else:
-				MouseButtonLeftPressed = false
-				MouseScreenX = 999999
-				MouseScreenY = 999999
-		elif (ScreensCore.ScreenToDisplay == ScreensCore.PlayingGameScreen):
-			if (event is InputEventScreenTouch and event.is_pressed() == true):
-				MouseButtonLeftPressed = true
-				MouseScreenX = event.position.x
-				MouseScreenY = event.position.y
-			elif (event is InputEventScreenDrag and event.is_pressed() == true):
-				MouseButtonLeftPressed = true
-				MouseScreenX = event.position.x
-				MouseScreenY = event.position.y
-			else:
-				MouseButtonLeftPressed = false
-				MouseScreenX = 999999
-				MouseScreenY = 999999
-
-				TouchTwoPressed = false
-				TouchTwoScreenX = 999999
-				TouchTwoScreenY = 999999
-
 	if (JoystickDirection[InputKeyboard] != JoyCentered or JoyButtonOne[InputKeyboard] != NotPressed or JoyButtonTwo[InputKeyboard] != NotPressed or MouseButtonLeftPressed != false or MouseButtonRightPressed != false):
 		InputDetected = true
+
+	if (ScreensCore.ScreenToDisplay == ScreensCore.PlayingGameScreen and LogicCore.PAUSEgame == true && MouseButtonLeftPressed == true):
+		LogicCore.PAUSEgame = false
+		LogicCore.PauseWasJustPressed = true
+
+		VisualsCore.DrawSprite(2, (VisualsCore.ScreenWidth/2.0), (VisualsCore.ScreenHeight/2.0), 1.0, 1.0, 0, 1.0, 1.0, 1.0, 0.0)
+
+		AudioCore.MusicVolume = OldMusicVolume
+		AudioCore.MusicPlayer.set_volume_db(AudioCore.ConvertLinearToDB(AudioCore.MusicVolume))
+
+		AudioCore.PlayEffect(1)
+		DelayAllUserInput = 25
 
 	pass
