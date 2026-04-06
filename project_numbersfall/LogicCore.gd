@@ -80,6 +80,8 @@ var SelectedTilePlayfieldX = []
 var SelectedTilePlayfieldY = []
 var SelectedTileIndex
 
+var TouchChooseOnlyOne
+
 var UndoButtonDelay
 
 var BadEquationRedTimer
@@ -243,6 +245,8 @@ func SetupForNewGame():
 		SelectedTilePlayfieldY[index] = -1
 
 	SelectedTileIndex = 0
+
+	TouchChooseOnlyOne = false
 
 	UndoButtonDelay = 0
 
@@ -605,7 +609,7 @@ func RunGameplayCore():
 				Playfield[FallingTileX][FallingTileY] = FallingTile
 				SetUpNextFallingTile()
 
-		if (InputCore.MouseButtonLeftPressed == true and InputCore.DelayAllUserInput == -1 and CutSceneScale == 0.0):
+		if (InputCore.MouseButtonLeftPressed == true and InputCore.DelayAllUserInput == -1 and CutSceneScale == 0.0 and TouchChooseOnlyOne == false):
 			ConvertTilesToString()
 			var screenY = 500-37+11
 			var screenX = 99-11
@@ -627,11 +631,14 @@ func RunGameplayCore():
 
 								if (selected == false):
 									allowTileSelection = true
+									TouchChooseOnlyOne = true
 
 					screenX+=50
 
 				screenX = 99-11
 				screenY-=50
+		elif (InputCore.MouseButtonLeftPressed == false):
+			TouchChooseOnlyOne = false
 
 		if (allowTileSelection == true):
 			SelectedTilePlayfieldX[SelectedTileIndex] = xPos
@@ -682,6 +689,8 @@ func _ready():
 	SelectedTilePlayfieldY.resize(20)
 
 	SelectedTileIndex = 0
+
+	TouchChooseOnlyOne = false
 
 	UndoButtonDelay = 0
 

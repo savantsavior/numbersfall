@@ -493,10 +493,10 @@ func ThisIconWasPressed(iconToCheck, _player):
 					Icons.IconAnimationTimer[iconToCheck] = 3
 					return true
 
-			if (InputCore.TouchTwoPressed == true):
-				if (InputCore.TouchTwoScreenY > (Icons.IconScreenY[iconToCheck]-sprH) && InputCore.TouchTwoScreenY < (Icons.IconScreenY[iconToCheck]+sprH) && InputCore.TouchTwoScreenX > (Icons.IconScreenX[iconToCheck]-sprW) && InputCore.TouchTwoScreenX < (Icons.IconScreenX[iconToCheck]+sprW)):
-					Icons.IconAnimationTimer[iconToCheck] = 3
-					return true
+			#if (InputCore.TouchTwoPressed == true):
+				#if (InputCore.TouchTwoScreenY > (Icons.IconScreenY[iconToCheck]-sprH) && InputCore.TouchTwoScreenY < (Icons.IconScreenY[iconToCheck]+sprH) && InputCore.TouchTwoScreenX > (Icons.IconScreenX[iconToCheck]-sprW) && InputCore.TouchTwoScreenX < (Icons.IconScreenX[iconToCheck]+sprW)):
+					#Icons.IconAnimationTimer[iconToCheck] = 3
+					#return true
 
 	return false
 

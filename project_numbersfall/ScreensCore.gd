@@ -1850,20 +1850,20 @@ func DisplayNewHighScoreScreen():
 			if (index < 63 && NewHighScoreStringIndex < 20):
 				NewHighScoreString+=InterfaceCore.Icons.IconText[index]
 				NewHighScoreStringIndex+=1
-				if (InputCore.MouseButtonLeftPressed == true || InputCore.TouchTwoPressed == true):  InputCore.DelayAllUserInput = 10
+				if (InputCore.MouseButtonLeftPressed == true):  InputCore.DelayAllUserInput = 10
 				AudioCore.PlayEffect(0)
 				VisualsCore.DrawText(highScoreNameTextIndex, NewHighScoreString, 0, 70+55, 1, 0, 55, 1.0, 1.0, 0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0)
 			elif (index == 63 && NewHighScoreStringIndex < 20):
 				NewHighScoreString+=" "
 				NewHighScoreStringIndex+=1
-				if (InputCore.MouseButtonLeftPressed == true || InputCore.TouchTwoPressed == true):  InputCore.DelayAllUserInput = 10
+				if (InputCore.MouseButtonLeftPressed == true):  InputCore.DelayAllUserInput = 10
 				AudioCore.PlayEffect(0)
 				VisualsCore.DrawText(highScoreNameTextIndex, NewHighScoreString, 0, 70+55, 1, 0, 55, 1.0, 1.0, 0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0)
 			elif (index == 65):
 				if (NewHighScoreStringIndex > 0):
 					NewHighScoreString = NewHighScoreString.left(-1)
 					NewHighScoreStringIndex-=1
-					if (InputCore.MouseButtonLeftPressed == true || InputCore.TouchTwoPressed == true):  InputCore.DelayAllUserInput = 10
+					if (InputCore.MouseButtonLeftPressed == true):  InputCore.DelayAllUserInput = 10
 					AudioCore.PlayEffect(0)
 					VisualsCore.DrawText(highScoreNameTextIndex, NewHighScoreString, 0, 70+55, 1, 0, 55, 1.0, 1.0, 0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0)
 

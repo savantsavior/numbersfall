@@ -63,6 +63,8 @@ var MouseButtonRightPressed
 var MouseScreenX
 var MouseScreenY
 
+var TouchDragDetected
+
 var OldMusicVolume
 
 const InputNone			= -1
@@ -81,7 +83,7 @@ var InputNames = []
 var TouchTwoScreenX
 var TouchTwoScreenY
 
-var TouchTwoPressed
+#var TouchTwoPressed
 
 var InputThatStartedNewGame
 
@@ -200,8 +202,8 @@ func _ready():
 
 	MouseButtonLeftPressed = false
 	MouseButtonRightPressed = false
-	
-	TouchTwoPressed = false
+
+	TouchDragDetected = false
 
 	HTML5input = InputKeyboard
 
@@ -403,9 +405,13 @@ func _input(event):
 		MouseScreenY = event.position.y
 		touchDetected = true
 	elif (event is InputEventScreenDrag):
+		TouchDragDetected = true
 		MouseButtonLeftPressed = true
 		MouseScreenX = event.position.x
 		MouseScreenY = event.position.y
+		touchDetected = true
+	elif (TouchDragDetected == true):
+		TouchDragDetected = false
 		touchDetected = true
 
 	if (touchDetected == false):
@@ -423,6 +429,7 @@ func _input(event):
 					InputThatStartedNewGame = InputKeyboard
 				elif (event.is_released() == true):
 					MouseButtonLeftPressed = false
+					LogicCore.TouchChooseOnlyOne = false
 
 		if event is InputEventMouseButton:
 			if event.button_index == MOUSE_BUTTON_RIGHT:
