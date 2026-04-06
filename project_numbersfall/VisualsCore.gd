@@ -229,49 +229,49 @@ func _ready():
 		fileName = "res://media/images/playing/Tile"+str(number)+"-S.png"
 		Sprites.SpriteImage[20000+(number*1000)] = load(fileName)
 		Sprites.SpriteActive[20000+(number*1000)] = true
-		for index in range(1, 999):
+		for index in range(1, 250):
 			Sprites.SpriteImage[20000+(number*1000)+index] = Sprites.SpriteImage[20000+(number*1000)].duplicate()
 			Sprites.SpriteActive[20000+(number*1000)+index] = true
 
 	Sprites.SpriteImage[30000] = load("res://media/images/playing/TilePlus-S.png")
 	Sprites.SpriteActive[30000] = true
-	for index in range(1, 999):
+	for index in range(1, 250):
 		Sprites.SpriteImage[30000+index] = Sprites.SpriteImage[30000].duplicate()
 		Sprites.SpriteActive[30000+index] = true
 
 	Sprites.SpriteImage[31000] = load("res://media/images/playing/TileMinus-S.png")
 	Sprites.SpriteActive[31000] = true
-	for index in range(1, 999):
+	for index in range(1, 250):
 		Sprites.SpriteImage[31000+index] = Sprites.SpriteImage[31000].duplicate()
 		Sprites.SpriteActive[31000+index] = true
 
 	Sprites.SpriteImage[32000] = load("res://media/images/playing/TileMuliply-S.png")
 	Sprites.SpriteActive[32000] = true
-	for index in range(1, 999):
+	for index in range(1, 250):
 		Sprites.SpriteImage[32000+index] = Sprites.SpriteImage[32000].duplicate()
 		Sprites.SpriteActive[32000+index] = true
 
 	Sprites.SpriteImage[33000] = load("res://media/images/playing/TileDivide-S.png")
 	Sprites.SpriteActive[33000] = true
-	for index in range(1, 999):
+	for index in range(1, 250):
 		Sprites.SpriteImage[33000+index] = Sprites.SpriteImage[33000].duplicate()
 		Sprites.SpriteActive[33000+index] = true
 
 	Sprites.SpriteImage[34000] = load("res://media/images/playing/TileDecimal-S.png")
 	Sprites.SpriteActive[34000] = true
-	for index in range(1, 999):
+	for index in range(1, 250):
 		Sprites.SpriteImage[34000+index] = Sprites.SpriteImage[34000].duplicate()
 		Sprites.SpriteActive[34000+index] = true
 
 	Sprites.SpriteImage[35000] = load("res://media/images/playing/TileEqual-S.png")
 	Sprites.SpriteActive[35000] = true
-	for index in range(1, 999):
+	for index in range(1, 250):
 		Sprites.SpriteImage[35000+index] = Sprites.SpriteImage[35000].duplicate()
 		Sprites.SpriteActive[35000+index] = true
 
 	Sprites.SpriteImage[36000] = load("res://media/images/playing/Selected-S.png")
 	Sprites.SpriteActive[36000] = true
-	for index in range(1, 999):
+	for index in range(1, 250):
 		Sprites.SpriteImage[36000+index] = Sprites.SpriteImage[36000].duplicate()
 		Sprites.SpriteActive[36000+index] = true
 
@@ -455,9 +455,9 @@ func SetFullScreenMode():
 func SetScreenStretchMode():
 	var window = get_tree().root 
 	window.content_scale_mode = Window.CONTENT_SCALE_MODE_VIEWPORT
-	if (VisualsCore.KeepAspectRatio == 1):
+	if (VisualsCore.KeepAspectRatio == true):
 		window.content_scale_aspect = Window.CONTENT_SCALE_ASPECT_KEEP_WIDTH
-	elif (VisualsCore.KeepAspectRatio == 0):
+	elif (VisualsCore.KeepAspectRatio == false):
 		window.content_scale_aspect = Window.CONTENT_SCALE_ASPECT_IGNORE
 
 	pass
